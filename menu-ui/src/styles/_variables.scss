@@ -1,0 +1,276 @@
+$cfa-theme-color: #e5173f;
+
+@mixin  height-management{
+@media(max-height:460px){
+
+        height: 45.2vh;
+        overflow: auto;
+    }
+
+@media(max-height:470px) and (min-height:460px){
+
+        height: 46.29vh;
+        overflow: auto;
+        }
+
+
+@media(max-height:480px) and (min-height:470px){
+
+        height: 47.4vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:490px) and (min-height:480px){
+
+        height: 48.48vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:500px) and (min-height:490px){
+        height: 49.55vh;
+        overflow: auto;
+    }
+
+@media(max-height:510px) and (min-height:500px){
+
+        height: 50.5vh;
+        overflow: auto;
+
+}
+
+@media(max-height:520px) and (min-height:510px){
+
+    height: 51.5vh;
+    overflow: auto;
+
+}
+@media(max-height:530px) and (min-height:520px){
+
+        height: 52.5vh;
+        overflow: auto;
+
+    }
+@media(max-height:540px) and (min-height:530px){
+
+        height: 53.3vh;
+        overflow: auto;
+
+}
+
+@media(max-height:550px) and (min-height:540px){
+
+        height: 54.1vh;
+        overflow: auto;
+
+}
+    @media(max-height:560px) and (min-height:550px){
+
+        height: 55vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:570px) and (min-height:560px){
+
+        height: 55.8vh;
+        overflow: auto;
+
+}
+
+@media(max-height:580px) and (min-height:570px){
+
+        height: 56.5vh;
+        overflow: auto;
+
+    }
+@media(max-height:590px) and (min-height:580px){
+
+        height: 57.3vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:600px) and (min-height:590px){
+
+        height: 58vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:610px) and (min-height:600px){
+
+        height: 58.7vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:620px) and (min-height:610px){
+
+        height: 59.3vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:630px) and (min-height:620px){
+
+        height: 60vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:640px) and (min-height:630px){
+
+        height: 60.7vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:650px) and (min-height:640px){
+
+        height: 61.3vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:660px) and (min-height:650px){
+
+        height: 61.8vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:670px) and (min-height:660px){
+
+        height: 62vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:680px) and (min-height:670px){
+
+        height: 62.9vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:690px) and (min-height:680px){
+
+        height: 63.5vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:700px) and (min-height:690px){
+
+        height: 64vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:710px) and (min-height:700px){
+
+        height: 64.5vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:720px) and (min-height:710px){
+
+        height: 65vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:730px) and (min-height:720px){
+
+        height: 65.45vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:740px) and (min-height:730px){
+
+        height: 66vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:750px) and (min-height:740px){
+
+        height: 66.3vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:760px) and (min-height:750px){
+
+        height: 66.8vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:770px) and (min-height:760px){
+
+        height: 67.2vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:780px) and (min-height:770px){
+
+        height: 67.7vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:790px) and (min-height:780px){
+
+        height: 68.2vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:800px) and (min-height:790px){
+
+        height: 68.5vh;
+        overflow: auto;
+
+    }
+
+    @media(max-height:805px) and (min-height:800px){
+
+            height: 68.6vh;
+            overflow: auto;
+
+        }
+@media(max-height:810px) and (min-height:805px){
+
+        height: 68.9vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:820px) and (min-height:810px){
+
+        height: 69.25vh;
+        overflow: auto;
+
+    }
+
+@media(max-height:830px) and (min-height:820px){
+
+        height: 69.75vh;
+        overflow: auto;
+
+    }
+
+@media(min-height:830px){
+
+        height: 70.25vh;
+        overflow: auto;
+
+    }
+}
+

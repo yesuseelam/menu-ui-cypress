@@ -1,0 +1,53 @@
+:host{
+    font-family: PMN Caecilia;
+}
+
+#d1{
+    padding:0px 10px 0px 20px;
+    float: right;
+    position: relative;
+    top: 5px;
+}
+
+#d2{
+    padding: 20px 20px 20px 27px;
+    color: #e5173f;
+    font-size: 17px;
+}
+
+#add {
+    font-size: 34px;
+    font-weight: bolder;
+    color: #e5173f;
+    padding-right: 12px;
+    padding-top: 8px;
+}
+
+#copy {
+    font-size: 24px;
+    font-weight: bolder;
+    color: #e5173f;
+    padding-right: 12px;
+    padding-top: 8px;
+}
+
+p{
+    cursor: pointer;
+}
+
+.disabled{
+    color:#d3d3d3;
+}
+
+#context-color {
+    color: #e5173f;
+    width: 100%;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.selected {
+    border-bottom: 1px dotted;
+    font-weight: bolder;
+    color: #004F71;
+}

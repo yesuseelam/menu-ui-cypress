@@ -1,0 +1,55 @@
+:host{
+  background-color: #f1f6f7;
+  // height: 400px;
+  font-family: PMN Caecilia;
+}
+
+#heading{
+  flex-direction: column !important;
+  margin-bottom: 10px;
+}
+
+#sidenav-tab2{
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  a{
+    font-family: PMN Caecilia;
+    color: #e5173f;
+    font-size: 18px;
+  }
+}
+
+mat-card{
+  padding-top: 20px;
+  padding-left: 1px;
+  height: 100%;
+}
+
+#line-spacing{
+  border-bottom: 2px solid #eee;
+  margin: 5px 15px 15px 0px;
+}
+
+#heading-tab2{
+  font-size: 24px;
+  margin-left: 2.2%;
+}
+
+.box1Width{
+  padding: 10px !important;
+}
+
+.bull{
+  visibility: hidden;
+}
+
+.span-active{
+  .inner-tab{
+    border-bottom: 1px dotted !important;
+    font-weight: bold;
+  }
+  .bull{
+    visibility: visible;
+  }
+}
+ 

@@ -1,0 +1,20 @@
+<div class="flex-container" #pageScroll cdkScrollable>
+  <div class="flex-item" *ngIf="authenticated">
+    <cfa-navigation-wrapper [showDropShadow]="true" [ignoreContainerPadding]="true" (signout)="signOut()"
+                            [userName]="user?.firstName + ' ' + user?.lastName" [appName]="appName"
+                            [shortAppName]="shortName">
+      <cfa-tab *ngFor="let tab of tabs" [disabled]="tab.isDisabled" [routerLink]="tab.url"
+               [label]="tab.label"></cfa-tab>
+      <cfa-nav-content>
+
+        <main class="app-main">
+          <router-outlet></router-outlet>
+        </main>
+
+      </cfa-nav-content>
+    </cfa-navigation-wrapper>
+  </div>
+</div>
+<div *ngIf="!authenticated" class="k-i-loading" style="margin: 15% 0;font-size: 100px;"></div>
+<cfa-sign-in-widget #signInWidget></cfa-sign-in-widget>
+

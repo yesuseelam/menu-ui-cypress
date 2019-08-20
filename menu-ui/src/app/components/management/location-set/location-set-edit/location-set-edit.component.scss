@@ -1,0 +1,55 @@
+h2{
+    font-weight: 400;
+    color: #e5173f;
+    font-size: 22px;
+    font-family: PMN Caecilia;
+    margin-bottom: 30px;
+}
+
+:host{
+    font-family: PMN Caecilia;
+    margin: 20px 2px 20px 20px;    
+}
+
+select, textarea{
+    font-family: PMN Caecilia !important;
+    resize: vertical;
+}
+
+.edit-margin{
+    margin:10px 15px 10px 0px
+}
+
+label{
+    font-size: 15px;
+    color: #776e64;
+}
+
+.tag{
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.edit-table{
+    height:90px;
+    overflow:auto;
+    margin-bottom: 18px;
+    resize:vertical;
+    max-height: 200px;
+}
+
+.table-label{
+    font-weight: normal;font-family: PMN Caecilia;color: rgb(119,110,100);
+}
+
+td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+
+tr:last-child>td {     
+    border-bottom: 1px solid #ddd;
+}

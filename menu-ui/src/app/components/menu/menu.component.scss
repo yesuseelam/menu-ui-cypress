@@ -1,0 +1,107 @@
+:host{
+    background-color: #f1f6f7;
+    font-family: PMN Caecilia;
+}
+.mat-icon-button{
+    color: #e5173f;
+}
+.card-attributes {
+  margin-left: 10px;
+  margin-right: 10px;
+  height: auto;
+}
+#location-set-type {
+  padding-top: 10px;
+}
+
+#heading{
+    flex-direction: column !important;
+    margin-bottom: 10px;
+}
+
+#sidenav-tab2{
+    width: 100%;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    h3{
+        margin: 20px 0px 0px 20px;
+        width: 100%;
+        font-family: PMN Caecilia;
+        color: #e5173f;
+        font-size: 18px;
+    }
+    .destination-heading{
+        display: inline;
+        margin: 11px 11px 11px 15px;
+    }
+  }
+
+  .destination-heading2 {
+      margin: 8px 8px 0 8px;
+      font-family: PMN Caecilia, sans-serif;
+      color: #e5173f !important;
+      font-size: 18px;
+  }
+
+  .location-heading {
+    font-family: PMN Caecilia, sans-serif;
+    color: #303030;
+    font-size: 13px;
+  }
+
+  #add{
+    font-size: 34px;
+    font-weight: bolder;
+    color: #e5173f;
+}
+
+  mat-card{
+      padding-top: 13px;
+      height: 100%;
+  }
+
+  #line-spacing{
+    border-bottom: 2px solid #eee;
+    margin: 5px 15px 15px 0px;
+  }
+
+  #heading-tab2{
+      font-size: 24px;
+      margin-left: 2.2%;
+  }
+
+  #location-set-type{
+      width: 85%;
+      margin-left: 20px;
+  }
+
+  a{
+    display: inline-block;
+    height: 100%;
+  }
+
+  .push-menu{
+    padding: 0px;
+  }
+
+  .disabled{
+    color:#d3d3d3;
+}
+
+  .visible{
+      visibility: hidden;
+      padding: 0px;
+  }
+
+  .line-seperator{
+      border-bottom: 3px solid #eee;
+      width: 100%;
+      margin-top: 10px;
+  }
+
+  .line-seperator2{
+    border-bottom: 2px solid #eee;
+    width: 100%;
+    margin-top: 10px;
+}
+

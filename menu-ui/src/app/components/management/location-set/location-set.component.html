@@ -1,0 +1,68 @@
+<div fxLayout="row">
+  <div fxLayout="column" fxFlex="60">
+    <mat-card>
+      <div fxFlex="row" id="moz-fixed-height" style="max-height:70px !important">
+        <div fxFlex="93" style="height:70px">
+          <mat-form-field class="select-full-width">
+            <mat-select [(value)]="selected">
+              <mat-option value="type">Type</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-select [(ngModel)]="selectedLocationSetType" placeholder="Select a Location Set Type" (selectionChange)="locationSetTypeChanged($event.value)">
+              <mat-option *ngFor="let locationSetType of locationSetTypes" [value]="locationSetType">{{locationSetType.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="7" fxLayoutAlign="start" style="margin-top:17px;height:55px">
+          <button mat-icon-button (click)="openCreateLocationSetDialog()">
+                   <span matTooltip="Create a Location Set">
+                        <mat-icon id="add">add</mat-icon>
+                   </span>
+          </button>
+        </div>
+      </div>
+      <div id="line-spacing">
+      </div>
+      <div class="locationSetType-list">
+        <mat-list id="management-list">
+
+          <div ngClass="node-tree">
+            <tree-root #tree [nodes]="nodes" [options]="options" >
+              <ng-template #treeNodeTemplate let-node let-index="index">
+                <span [ngClass]="{'node-disabled' : selectedLocationSetType.locked, 'node' : true } " [contextMenu]="basicMenu" [contextMenuSubject]="node.data">{{ node.data.name }}</span>
+                <context-menu #basicMenu [disabled]="user.isReadOnly">
+                  <ng-template [visible]="node.isRoot" contextMenuItem>
+                    <button class="context-color" mat-button (click)="addChildLocation(node)" [disabled]="selectedLocationSetType.locked">
+                      <mat-icon>add</mat-icon>
+                      <span>Add Location</span>
+                    </button>
+                  </ng-template>
+                  <ng-template contextMenuItem>
+                    <button class="context-color" mat-button (click)="deleteLocation(node)" [disabled]="selectedLocationSetType.locked">
+                      <mat-icon>delete</mat-icon>
+                      <span>{{node.isRoot ? 'Delete' : 'Remove'}}</span>
+                    </button>
+                  </ng-template>
+                </context-menu>
+              </ng-template>
+            </tree-root>
+          </div>
+        </mat-list>
+        <mat-progress-spinner *ngIf="spinner" style="margin: 40px auto;" [color]="color" [mode]="mode" [diameter]="diameter">
+        </mat-progress-spinner>
+      </div>
+      <div>
+        <button [disabled]= "user.isReadOnly" (click)="importLocations()" style="width: 100%;" [disabled]="importingLocations" mat-raised-button>Import Locations</button>
+        <mat-progress-bar *ngIf="importingLocations" mode="indeterminate"></mat-progress-bar>
+        <span>{{importedLocationsMessage}}</span>
+      </div>
+    </mat-card>
+  </div>
+  <div fxFlex="40" fxFlexOffset="1">
+    <mat-card style="height:100%">
+      <app-location-set-edit [locationSet]="selectedLocationSet" (locationSetChanged)="locationSetChange($event)">
+      </app-location-set-edit>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,204 @@
+<div *ngIf="formReady" fxFlex="column">
+  <h2>Attributes</h2>
+  <form style="flex-direction:column" [formGroup]="form" class="attribute-list" novalidate (ngSubmit)="OnSubmit()">
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="39">
+        <label>
+          Tag
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" class="tag">
+        {{attribute?.tag}}
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="39">
+        <label>
+          Name
+          <span style="display: inline-block;vertical-align: middle;">
+                        <mat-icon style="font-size:7px;color:#6c635a">star</mat-icon>
+                    </span>
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap">
+        <input class="form-control" required formControlName="name">
+        <span *ngIf="form.controls['name'].invalid" style="color:#e5173f;font-size:14px">
+                    Please Enter a Name</span>
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="35">
+        <label>
+          JSON Attribute Name
+          <span style="display: inline-block;vertical-align: middle;">
+                        <mat-icon style="font-size:7px;color:#6c635a">star</mat-icon>
+                    </span>
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="7" style="display:flex;flex-wrap:wrap">
+        <input class="form-control" required formControlName="objectName">
+        <p *ngIf="form.controls['objectName'].invalid" style="color:#e5173f;font-size:14px">
+          Please Enter a JSON Attribute Name
+        </p>
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="39">
+        <label>
+          Description
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+        <textarea rows="3" class="form-control" formControlName="description"></textarea>
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="39">
+        <label>
+          Scope
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+        <select class="form-control" formControlName="scope">
+          <option value="GLOBAL">Global</option>
+          <option value="LOCAL">Dynamic</option>
+        </select>
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="39">
+        <label>
+          Attribute Type
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+        <select class="form-control" formControlName="type">
+          <option *ngFor="let attributeType of attributeTypes" [value]="attributeType.tag">
+            {{ attributeType.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="39">
+        <label>
+          Required
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+        <select class="form-control" formControlName="required">
+          <option value="true">True</option>
+          <option value="false">False</option>
+        </select>
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="39">
+        <label>
+          Locked
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+        <select class="form-control" formControlName="locked">
+          <option value="true">True</option>
+          <option value="false">False</option>
+        </select>
+      </div>
+    </div>
+
+    <div fxFlex="row" class="edit-margin" *ngIf="attribute && attribute?.type !== 'SELECT'">
+      <div fxFlex="39">
+        <label>
+          Default Value
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap" [ngSwitch]="attribute.type">
+        <select *ngSwitchCase="'BOOL'" class="form-control" formControlName="defaultValue"
+                [value]="attribute.defaultValue">
+          <option *ngFor="let option of attribute.options" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+        <mat-form-field *ngSwitchCase="'DATE'">
+          <input matInput [matDatepicker]="picker" formControlName="defaultValue" placeholder="Choose a date" required="false">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.controls['defaultValue'].invalid">
+            Please enter a valid date
+          </mat-error>
+        </mat-form-field>
+        <input *ngSwitchCase="'DATERANGE'" type="text" required="false" class="form-control" placeholder="Default Value"
+               autoApply="true" (keyup)="dateRangeUpdated($event)"
+               ngxDaterangepickerMd formControlName="defaultValue">
+
+        <input *ngSwitchCase="'TEXT'" class="form-control" type="text" formControlName="defaultValue">
+        <input *ngSwitchCase="'NUM'" class="form-control" type="number" (focusout)="numberValidation()"
+               formControlName="defaultValue">
+        <p *ngIf="attribute?.type == 'NUM' && form.controls['defaultValue'].errors?.pattern"
+           style="color:#e5173f;font-size:14px">Please Enter a Valid Number
+        </p>
+      </div>
+    </div>
+    <div fxFlex="row" style="margin:20px 15px 0px 0px" *ngIf="hasConfigurableOptions">
+      <div fxFlex="40">
+        Options
+      </div>
+      <div fxFlex="50" fxLayoutAlign="end">
+        Default Value
+      </div>
+      <div fxFlex="10" fxLayoutAlign="end">
+        <mat-icon style="font-size:18px;cursor:pointer" (click)="editOptions()">mode_edit</mat-icon>
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-table" style="margin:0px 15px 0px 0px" *ngIf="hasConfigurableOptions"
+         formArrayName="options">
+      <table style="width:100%">
+        <tbody>
+        <tr *ngFor="let formGroup of attributeOptions.controls" style="border-bottom: 1px solid #d3d3d3;">
+          <td style="width:70%">
+            <label class="table-label">
+              <span class="bull">&bull;</span>
+              &nbsp;&nbsp;{{formGroup.get('option').value}}
+            </label>
+          </td>
+          <td style="width: 30%;">
+            <input type="checkbox" [checked]="formGroup.get('isDefault').value" disabled>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div fxFlex="row" class="edit-margin" *ngIf="attribute">
+      <div fxFlex="39">
+        <label>
+          Last Updated By
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+        {{attribute?.updatedBy | titlecase}}
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin" *ngIf="attribute">
+      <div fxFlex="39">
+        <label>
+          Last Updated Date
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+                <span>
+                    {{attribute?.dateUpdated | date:'y/MM/dd hh:mm:ss a'}}
+                </span>
+      </div>
+    </div>
+    <div fxFlex="row" fxLayoutAlign="center center" style="margin:30px 0px" *ngIf="attribute">
+      <button type="button" (click)="OnCancel()" matTooltip="Cancel" mat-raised-button
+              style="margin-right:30px;background-color:#e5173f;color:white">
+        Cancel
+      </button>
+      <button type="submit" [disabled]="form.pristine || form.invalid || user.isReadOnly" matTooltip="Update Attribute"
+              mat-raised-button style="margin-left:30px;background-color:#e5173f;color:white">
+        Update
+      </button>
+    </div>
+  </form>
+</div>

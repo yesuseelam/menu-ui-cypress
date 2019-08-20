@@ -1,0 +1,189 @@
+<div *ngIf="showCreateItem">
+    <mat-horizontal-stepper [linear]="isLinear">
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup" (ngSubmit)="onSubmit()" >
+                <ng-template matStepLabel >
+                    <div>
+                    <span active>Create your Item / Modifier</span>                        
+                    </div>
+                </ng-template>
+                <table class="itemgrouping-modal-full-width" cellspacing="2">
+                    <tr>
+                        <td>
+                            <mat-form-field>
+                                <input matInput required placeholder="Item/Modifier Tag" (focusout)="findTagExists()" pattern="^[A-Z_0-9]*$" formControlName="tag">
+                                <mat-error *ngIf="firstFormGroup.controls['tag'].invalid && !firstFormGroup.controls['tag'].value">
+                                    Please enter a Standard Tag
+                                </mat-error>
+                                <mat-error *ngIf="firstFormGroup.controls['tag'].errors?.pattern && firstFormGroup.controls['tag'].value">
+                                    Please enter a Valid Standard Tag
+                                </mat-error>
+                                <mat-error *ngIf="firstFormGroup.controls['tag'].errors?.tagExists && firstFormGroup.controls['tag'].touched">
+                                    Tag already exists! Create a new one.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <mat-select placeholder="Item Type" required formControlName="itemType">
+                                    <mat-option *ngFor="let itemType of itemTypes" [value]="itemType.tag">
+                                        {{ itemType.name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="firstFormGroup.controls['itemType'].invalid">
+                                    Please Select a Item Type
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                  <tr><td>
+                    <mat-form-field>
+                      <mat-select placeholder="Locked" formControlName="locked"  matTooltip="This will prevent deletion of the item">
+                        <mat-option [value]="true">
+                          True
+                        </mat-option>
+                        <mat-option [value]="false">
+                          False
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field></td>
+                  </tr>
+                </table>
+                <div fxLayoutAlign="center center" style="margin-top:30px;height:50px">
+                  <button mat-raised-button matTooltip="Cancel Creating Item" (click)="onNoClick()" style="margin-right:60px" type="button" class="button-color">Cancel
+                  </button>
+                    <button mat-raised-button matStepperNext matTooltip="Submit Item" type="submit" class="button-color">Next
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup" *ngIf="globalAttributes">
+            <form [formGroup]="secondFormGroup" (ngSubmit)="onSubmit2()">
+                <ng-template matStepLabel>Add Global Attributes to {{firstFormGroup.controls['tag'].value | uppercase}}</ng-template>
+               <div fxLayout="row wrap" style="height:50vh;overflow:auto;min-height:400px">
+                <div fxFlex="50" *ngFor="let attribute of globalAttributes">
+                    <mat-form-field *ngIf="attribute?.type==='NUM'">
+                        <input matInput type="number" [placeholder]="attribute.name"
+                         [formControlName]="attribute.tag" (focusout)="numberValidation(attribute.tag)"
+                        [required]="attribute.required">
+                        <mat-error *ngIf="secondFormGroup.controls[attribute.tag].invalid">
+                            Please enter a valid value (eg:23.50)
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="attribute?.type==='TEXT'">
+                        <input matInput type="text" [placeholder]="attribute.name" [formControlName]="attribute.tag"
+                        [required]="attribute.required">
+                        <mat-error *ngIf="secondFormGroup.controls[attribute.tag].invalid
+                        && !secondFormGroup.controls[attribute.tag].value">
+                                Please enter a Value
+                            </mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="attribute?.type==='TEXTAREA'">
+                        <textarea matInput matTextareaAutosize matAutosizeMinRows="1" matAutosizeMaxRows="4" [placeholder]="attribute.name" [formControlName]="attribute.tag"
+                                  [required]="attribute.required"></textarea>
+                        <mat-error *ngIf="secondFormGroup.controls[attribute.tag].invalid
+                        && !secondFormGroup.controls[attribute.tag].value">
+                            Please enter a Value
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="attribute?.type==='BOOL'">
+                        <mat-select [placeholder]="attribute.name" [formControlName]="attribute.tag"
+                        [required]="attribute.required">
+                            <mat-option [value]="" *ngIf="!attribute.required">(empty)</mat-option>
+                            <!-- Data type changed from string ('true') to boolean (true) -->
+                            <mat-option [value]="true">
+                                True
+                            </mat-option>
+                            <mat-option [value]="false">
+                                    False
+                                </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="secondFormGroup.controls[attribute.tag].invalid
+                        && !secondFormGroup.controls[attribute.tag].value">
+                                Please enter a Value
+                            </mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="attribute?.type==='SELECT'">
+                            <mat-select [placeholder]="attribute.name" [formControlName]="attribute.tag" [required]="attribute.required">
+                                <mat-option [value]="" *ngIf="!attribute.required">(empty)</mat-option>
+                                <mat-option *ngFor="let globalSelectValue of attribute?.options"
+                                [value]="globalSelectValue.label">
+                                    {{globalSelectValue.label}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="secondFormGroup.controls[attribute.tag].invalid
+                            && !secondFormGroup.controls[attribute.tag].value">
+                                    Please enter a Value
+                                </mat-error>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="attribute?.type==='MULTI_SELECT'">
+                            <mat-select [placeholder]="attribute.name" [formControlName]="attribute.tag" multiple [required]="attribute.required">
+                              <mat-option *ngFor="let topping of attribute.options" [value]="topping.value">
+                                  {{topping.value}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="secondFormGroup.controls[attribute.tag].invalid
+                            && !secondFormGroup.controls[attribute.tag].value">
+                                    Please enter a Value
+                                </mat-error>
+                          </mat-form-field>
+
+                </div>
+               </div>
+                <div fxLayoutAlign="center center" style="margin-top:30px;height:50px">
+                    <button mat-raised-button matTooltip="Back" matStepperPrevious style="margin-right:30px">Back</button>
+                    <button mat-raised-button type="submit" matTooltip="Save Item"  [disabled]="user.isReadOnly"
+                    class="button-color" matStepperNext>Save</button>
+                </div>
+            </form>
+        </mat-step>
+    </mat-horizontal-stepper>
+    </div>
+    
+    <div fxLayout="column" *ngIf="showDeleteItem">
+        <div fxLayoutAlign="end">
+            <mat-icon id="clear" (click)="onNoClick()" style="cursor:pointer">
+                clear
+            </mat-icon>
+        </div>
+        <div fxLayoutAlign="center center">
+            <p class="p1">Are you sure you want to delete
+            </p>
+        </div>
+        <div fxLayoutAlign="center center">
+            <p class="p2" [innerHtml]="item?.name"> ?
+            </p>
+        </div>
+        <p class="p3" *ngIf="cannotDeleteItem">Cannot delete. {{item?.name | titlecase}} is used elsewhere</p>
+        <div fxLayoutAlign="center center" style="margin:20px 0px 40px 0px">
+            <button mat-raised-button matTooltip="Delete Item" type="button" style="margin-right:30px" (click)="removeItem()"
+                class="button-color">Yes
+            </button>
+            <button mat-raised-button type="button" matTooltip="Cancel deleting Item" (click)="onNoClick()" class="button-color">No</button>
+        </div>
+    </div>
+
+    <div fxLayout="column" *ngIf="data?.showDisableItem || data?.showEnableItem">
+        <div fxLayoutAlign="end">
+            <mat-icon id="clear" (click)="onNoClick()" style="cursor:pointer">
+                clear
+            </mat-icon>
+        </div>
+        <div fxLayoutAlign="center center">
+            <p class="p1" >Are you sure you want to 
+                <span *ngIf="data?.showDisableItem">disable</span>
+                <span *ngIf="data?.showEnableItem">enable</span>
+            </p>
+        </div>
+        <div fxLayoutAlign="center center">
+            <p class="p2" [innerHtml]="item?.name"> ?
+            </p>
+        </div>
+        <div fxLayoutAlign="center center" style="margin:20px 0px 40px 0px">
+            <button mat-raised-button matTooltip="Delete Item" type="button" style="margin-right:30px" 
+            (click)="disableOrEnableItem()" [disabled]="disableItem"
+                class="button-color">Yes
+            </button>
+            <button mat-raised-button type="button" matTooltip="Cancel disabling/enabling Item"
+            (click)="onNoClick()" class="button-color">No</button>
+        </div>
+    </div>

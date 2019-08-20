@@ -1,0 +1,17 @@
+<div *ngFor="let childItem of childItems;" class="top">
+    <div style="margin-bottom:10px" fxLayout="row">
+        <span class="bull" *ngIf="!childItem?.childItems">&#8226;</span>
+        <i class="material-icons" id="right-icon" (click)="childItem.accord =!childItem.accord"
+        *ngIf="childItem?.childItems && !childItem?.accord">
+            folder</i>
+        <i class="material-icons" id="right-icon" (click)="childItem.accord =!childItem.accord"
+        *ngIf="childItem?.childItems && childItem?.accord">
+            folder_open
+        </i>
+        <span [innerHTML]="childItem.name" style="cursor:pointer">
+        </span>
+    </div>
+    <div *ngIf="childItem.accord">
+        <app-child-item  [childItems]="childItem?.childItems"></app-child-item>
+    </div>
+</div>

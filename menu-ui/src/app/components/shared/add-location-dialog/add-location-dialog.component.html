@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Add Location</h1>
+<div mat-dialog-content>
+    <mat-form-field>
+        <input matInput placeholder="Start typing" [matAutocomplete]="auto" [formControl]="input" ngModel="input">
+    </mat-form-field>
+
+    <mat-autocomplete  (optionSelected)="doStuff($event)" #auto="matAutocomplete" panelWidth="555px" [displayWith]="displayFn">
+        <mat-option *ngFor="let option of options" [value]="option">{{option.name}} ({{option.tag}})</mat-option>
+    </mat-autocomplete >
+</div>
+<div mat-dialog-actions>
+    <button  mat-raised-button matTooltip="Cancel" class="button-color" (click)="onNoClick()">Cancel</button>
+    <button  mat-raised-button matTooltip="Save" [disabled]="!addItemToggle || !input.value" class="button-color" [mat-dialog-close]="input.value" cdkFocusInitial>Ok</button>
+</div>

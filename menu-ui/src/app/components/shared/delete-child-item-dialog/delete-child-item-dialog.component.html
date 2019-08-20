@@ -1,0 +1,76 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>
+          <div>
+            <span active>Select Parent</span>
+          </div>
+        </ng-template>
+        <div class="toggle-question">
+          <h6>Find selected parent from anywhere on menu or from under sub-menu only?</h6>
+          <mat-slide-toggle [formControl]="subMenuOnly"><span class="toggle-label">Sub-menu only</span></mat-slide-toggle>
+        </div>
+        <br/>
+        <div class="status">
+          <mat-progress-spinner *ngIf="spinner" [color]="color" [mode]="mode" [diameter]="diameter"></mat-progress-spinner>
+          <div *ngIf="!spinner"><h6>Found {{parentCount}} matches for parent</h6></div>
+        </div>
+        <div fxLayoutAlign="center center" class="buttons">
+          <button mat-raised-button matTooltip="Cancel" class="button-color" (click)="onNoClick()">Cancel</button>
+          <button mat-raised-button matTooltip="Continue"  class="button-color" matStepperNext>Continue</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>
+                <div>
+                    <span active>Delete Item</span>
+                </div>
+            </ng-template>
+            <div>
+                <div>
+                    <h6>Search child or descendant item to cascade delete under selected parent</h6>
+                    <h5 class="item-bold"><i class="material-icons">arrow_right</i> <span>{{parent.data.data.name}}  ({{parent.data.data.tag}})</span></h5>
+                </div>
+                <div class="child">
+                    <mat-form-field>
+                        <input matInput required placeholder="Start typing Item name or tag" [matAutocomplete]="auto" [formControl]="input" ngModel="input" (change)="onChange()">
+                    </mat-form-field>
+                    <mat-autocomplete (optionSelected)="onSelect($event)" #auto="matAutocomplete" [displayWith]="displayFn">
+                        <mat-option *ngFor="let option of options" [value]="option">{{option.name}} ({{option.tag}})</mat-option>
+                    </mat-autocomplete >
+                    <div class="status">
+                        <mat-progress-spinner *ngIf="spinner" [color]="color" [mode]="mode" [diameter]="diameter"></mat-progress-spinner>
+                        <div *ngIf="input.touched && searched && !spinner"><h6>Found {{childCount}} child matches under parent path</h6></div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayoutAlign="center center" class="buttons">
+                <button mat-raised-button matTooltip="Cancel" class="button-color" (click)="onNoClick()">Cancel</button>
+                <button mat-raised-button matTooltip="Back" class="button-color" matStepperPrevious>Back</button>
+                <button mat-raised-button matTooltip="Continue" [disabled]="!deleteItemToggle || !selectedChild" class="button-color" matStepperNext>Continue</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <div>
+            <ng-template matStepLabel>Confirm Delete</ng-template>
+            <div>
+                <h6>Are you sure you want to cascade delete all {{childCount}} child or descendant</h6>
+                <h5 class="item-bold">{{selectedChild?.name}} ({{selectedChild?.tag}})</h5>
+                <h6>anywhere under the selected parent</h6>
+                <h5 class="item-bold">{{parent.data.data.name}}  ({{parent.data.data.tag}})</h5>
+                <h6>from under
+                  <span *ngIf="subMenuOnly.value === true; else anywhere">sub-menu only?</span>
+                  <ng-template #anywhere><span>anywhere on this menu?</span></ng-template>
+                </h6>
+            </div>
+            <div fxLayoutAlign="center center" class="buttons">
+                <button mat-raised-button matTooltip="Cancel" class="button-color" (click)="onNoClick()">Cancel</button>
+                <button mat-raised-button matTooltip="Back" class="button-color" matStepperPrevious>Back</button>
+                <button mat-raised-button matTooltip="Delete" class="button-color" (click)="onSave()" cdkFocusInitial>Yes</button>
+            </div>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>

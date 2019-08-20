@@ -1,0 +1,24 @@
+{ 
+    
+  "tbaseUrl":"https://menu.restsolutions-test.cfadevelop.com",
+  "baseUrl": "http://localhost:3000",
+  "chromeWebSecurity": false,
+  "numTestsKeptInMemory": 1,
+  "reporter": "junit",
+  "reporterOptions": {
+  "mochaFile": "target/ui-test-report/TEST-cypress-output.html",
+  "toConsole": true
+},
+
+  "env":{
+  
+      "username": "yesu.seelam",
+      "password": "Unlockmesystem1"
+  }
+  
+ 
+        
+      
+   
+}
+

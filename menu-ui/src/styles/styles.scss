@@ -1,0 +1,512 @@
+/* this file will be extracted to main dist folder and is imported in index.html */
+/* This file is for setting global styles  */
+@import 'variables';
+/* cfa nav module */
+@import '~bootstrap/dist/css/bootstrap.css';
+@import '~font-awesome/css/font-awesome.min.css';
+/* okta css */
+@import '~@okta/okta-signin-widget/dist/css/okta-sign-in.min.css';
+@import '~@okta/okta-signin-widget/dist/css/okta-theme.css';
+
+@import '~angular-tree-component/dist/angular-tree-component.css';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* end cfa nav module */
+/* over ride cfa-nav component styles */
+div.cfa-toolbar.cfa-toolbar-height {
+  background: #ffffff;
+}
+/* end over ride*/
+#heading {
+  margin-top: 30px;
+}
+.main-content {
+  margin: 0 5px 0 0px !important;
+}
+.mat-card {
+  height: 90vh !important;
+}
+.mat-card h2:first-child {
+  margin-top: 15px;
+}
+body {
+  background: #f1f6f7 !important;
+}
+@font-face {
+  font-family: PMN Caecilia;
+  font-style: normal;
+  font-weight: normal;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  src: url(../assets/fonts/CaeciliaCom-45Light.woff) format('woff');
+}
+
+@font-face {
+  font-family: PMN Caecilia Bold;
+  src: url(../assets/fonts/CaeciliaCom-75Bold.woff);
+}
+
+body {
+  margin: 0px !important;
+  font-family: PMN Caecilia !important;
+}
+
+button,
+input,
+label {
+  font-family: PMN Caecilia !important;
+}
+
+.highlight-css {
+  background: #ff0;
+}
+
+#management-list {
+  .mat-button:hover .mat-button-focus-overlay {
+    opacity: 0;
+  }
+}
+
+#sidenav-tab2 {
+  .mat-button:hover .mat-button-focus-overlay {
+    opacity: 0;
+  }
+}
+
+.mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: #e5173f;
+  stroke-width: 5px !important;
+}
+
+context-menu-content li {
+  list-style: none;
+  min-width: 150px;
+  background-clip: padding-box;
+  // margin: 2px 0px 0px;
+  // background-color: #fff;
+  // border: 1px solid rgba(0,0,0,.15);
+  // border-radius: 4px;
+  // box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+context-menu-content ul {
+  margin-top: 2px !important;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+
+.show {
+  display: block !important;
+}
+
+.dropdown-menu > li > a {
+  display: block;
+  padding: 0px 3px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+}
+
+.form-control,
+output {
+  display: block;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+}
+
+.form-control {
+  width: 100%;
+  height: 34px;
+  padding: 0px 12px;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color 0.15s ease-in-out,
+  -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control[disabled],
+fieldset[disabled] .form-control {
+  background-color: #eee;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.form-control:focus {
+  border-color: #66afe9;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+  0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.mat-simple-snackbar {
+  font-family: PMN Caecilia;
+}
+
+.error-snackbar {
+  background-color: #e5173f;
+  color: white;
+}
+
+.success-snackbar {
+  background-color: green;
+  color: white;
+}
+
+.mat-simple-snackbar-action {
+  color: white;
+}
+
+.attribute-full-width {
+  width: 550px;
+  .mat-form-field {
+    width: 250px !important;
+  }
+}
+.destination-full-width {
+  width: 400px;
+  .mat-form-field {
+    width: 400px !important;
+  }
+}
+
+.mat-input-element {
+  font-family: PMN Caecilia !important;
+}
+
+.button-color {
+  background-color: #e5173f;
+  color: white;
+}
+
+.mat-error,
+.mat-form-field-invalid .mat-form-field-ripple,
+.mat-form-field-invalid .mat-form-field-placeholder {
+  color: #e5173f !important;
+  font-family: PMN Caecilia;
+}
+
+.mat-button-focus-overlay {
+  background-color: initial !important;
+}
+
+mat-option,
+.mat-select-value {
+  font-family: PMN Caecilia !important;
+}
+
+.attribute-list {
+  @include height-management;
+}
+
+.itemType-list {
+  @include height-management;
+}
+
+.emergency-list {
+  @include height-management;
+}
+.locationSetType-list {
+  @include height-management;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background,
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #e5173f;
+}
+
+textarea.form-control {
+  height: auto;
+  padding: 7px 12px;
+  resize: vertical;
+  font-family: PMN Caecilia !important;
+}
+
+select.form-control {
+  font-family: PMN Caecilia !important;
+  padding: 0px 12px;
+}
+
+.mat-fab.mat-accent[disabled],
+.mat-fab.mat-primary[disabled],
+.mat-fab.mat-warn[disabled],
+.mat-fab[disabled][disabled],
+.mat-mini-fab.mat-accent[disabled],
+.mat-mini-fab.mat-primary[disabled],
+.mat-mini-fab.mat-warn[disabled],
+.mat-mini-fab[disabled][disabled],
+.mat-raised-button.mat-accent[disabled],
+.mat-raised-button.mat-primary[disabled],
+.mat-raised-button.mat-warn[disabled],
+.mat-raised-button[disabled][disabled] {
+  opacity: 0.5;
+}
+
+.form-control.ng-invalid {
+  border-color: #e5173f;
+}
+
+//Item grouping accordion
+.mat-expansion-panel-content {
+  background: #eef4f5 !important;
+  color: #e5173f !important;
+  font-family: PMN Caecilia;
+}
+
+//Item grouping accordion
+#item-groupings .mat-expansion-panel-body {
+  padding: 10px 24px 10px 16px !important;
+}
+
+//Item grouping accordion
+.mat-expansion-panel-content.mat-expanded {
+  min-height: 100px;
+  background: #eef4f5 !important;
+  color: #e5173f !important;
+  font-family: PMN Caecilia;
+}
+
+//expansion indicator color change
+.mat-expansion-panel .mat-expansion-indicator::after {
+  color: #e5173f;
+}
+
+//expansion indicator color change
+.mat-expansion-panel.mat-expanded .mat-expansion-indicator::after {
+  color: white;
+}
+
+.mat-expansion-panel .selected-bold .mat-expansion-indicator::after {
+  color: white !important;
+}
+
+.mat-expansion-panel:not(.mat-expanded)
+.mat-expansion-panel-header:not([aria-disabled='true']):hover.selected-bold {
+  color: white;
+  background: #e5173f;
+}
+
+.mat-step-header .mat-step-icon {
+  background: #e5173f;
+}
+
+.itemgrouping-modal-full-width {
+  width: 607px;
+}
+
+//item-grouping stepper css
+.mat-step-label.mat-step-label-active.mat-step-label-selected {
+  display: inline-block !important;
+  font-size: 24px;
+}
+
+//item-grouping stepper css
+.mat-step-label {
+  display: none !important;
+}
+//item-grouping stepper css
+.mat-horizontal-stepper-header-container {
+  margin-bottom: 10px;
+}
+
+.mat-horizontal-content-container {
+  overflow: hidden;
+  padding: 0 24px 0px 24px !important;
+}
+
+// css styles for third panel
+
+.edit-margin {
+  margin: 10px 15px 10px 0px;
+}
+
+.edit-margin-user {
+  margin: 20px 15px 20px 0px;
+}
+
+// Angular 5
+
+.mat-list,
+.mat-nav-list,
+.mat-selection-list {
+  padding-top: 0px !important;
+  display: block;
+}
+
+.mat-list .mat-list-item .mat-list-item-content,
+.mat-list .mat-list-option .mat-list-item-content,
+.mat-nav-list .mat-list-item .mat-list-item-content,
+.mat-nav-list .mat-list-option .mat-list-item-content,
+.mat-selection-list .mat-list-item .mat-list-item-content,
+.mat-selection-list .mat-list-option .mat-list-item-content {
+  padding: 0px !important;
+}
+
+.mat-list .mat-list-item,
+.mat-nav-list .mat-list-item,
+.mat-selection-list .mat-list-item {
+  color: #e5173f;
+}
+
+//search input box in every screen in managment tab
+
+.full-width {
+  width: 76%;
+  margin-top: 10px;
+  margin-left: -9px;
+}
+
+.select-full-width {
+  width: 22%;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.full-width
+.mat-form-field-can-float.mat-form-field-should-float
+.mat-form-field-placeholder,
+.full-width .mat-form-field-empty.mat-form-field-placeholder,
+.full-width input.mat-input-element {
+  margin-left: 0px;
+}
+
+.full-width .mat-form-field-suffix .mat-icon-button {
+  font-size: 20px;
+}
+
+.select-full-width.mat-form-field-type-mat-select:not(.mat-form-field-disabled)
+.mat-form-field-flex {
+  padding-right: 25px;
+  border-left: 2px solid #eaeaea;
+  border-top: 2px solid #eaeaea;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  padding-bottom: 8px;
+}
+
+.select-full-width .mat-select-value-text {
+  padding-left: 10px;
+}
+
+.select-full-width .mat-form-field-underline,
+.full-width .mat-form-field-underline {
+  background-color: #eaeaea;
+  height: 2px;
+}
+
+.full-width .mat-form-field-flex {
+  border-top: 2px solid #eaeaea;
+  border-right: 2px solid #eaeaea;
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 3px;
+  padding-bottom: 10px;
+}
+
+.full-width {
+  .mat-focused .mat-form-field-placeholder {
+    color: red;
+  }
+}
+
+.cuppa-dropdown .dropdown-list {
+  width: 200px !important;
+}
+.cuppa-dropdown .selected-list {
+  width: 216px !important;
+}
+
+.selected-list .c-btn {
+  padding: 7px !important;
+  cursor: pointer;
+  box-shadow: none !important;
+  display: flex;
+  position: relative;
+}
+
+.c-btn {
+  border-radius: 5px !important;
+}
+
+.selected-list .c-list .c-token {
+  color: black !important;
+  background: white !important;
+}
+
+.cdk-overlay-container .cdk-global-overlay-wrapper {
+  overflow: auto;
+}
+
+.node-tree {
+  font-size: 17px;
+  font-family: PMN Caecilia;
+}
+
+.node-tree .node {
+  display: block;
+  color: #e5173f;
+  font-family: PMN Caecilia;
+}
+
+.node-tree .node-disabled {
+  color:#d3d3d3;
+}
+
+.node-tree .node-wrapper {
+  padding: 4px 20px !important;
+}
+
+.node-tree .node-content-wrapper-active,
+.node-tree .node-content-wrapper.node-content-wrapper-active:hover,
+.node-tree .node-content-wrapper-active.node-content-wrapper-focused {
+  background-color: #e5173f;
+}
+
+.node-tree .node-content-wrapper-active span {
+  color: white;
+}
+
+.node-tree .tree-node-loading {
+  padding-left: 20px !important;
+  font-size: 15px;
+}
+
+
+.app-menu-tree {
+  @include height-management;
+}
+.node-tree {
+  @include height-management;
+}
+
+.cfa-toolbar-tab {
+  width: 105% !important;
+}

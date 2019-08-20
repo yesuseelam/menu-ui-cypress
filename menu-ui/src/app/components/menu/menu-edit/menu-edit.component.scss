@@ -1,0 +1,88 @@
+h2{
+    font-weight: 400;
+    color: #e5173f;
+    font-size: 22px;
+    font-family: PMN Caecilia;
+    margin: 0px 0px 0px 0px !important;
+}
+
+:host{
+    font-family: PMN Caecilia;
+    margin: 10px 2px 10px 10px;
+}
+
+select, textarea{
+    font-family: PMN Caecilia !important;
+}
+
+.edit-margin{
+    margin:10px 15px 10px 0px
+}
+
+label{
+    font-size: 15px;
+    color: #776e64;
+}
+
+.tag{
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.disabled-source {
+    font-style: italic;
+    color: red;
+    font-size: smaller;
+}
+
+.edit-table{
+    height:90px;
+    overflow:auto;
+    margin-bottom: 18px;
+    resize:vertical;
+    max-height: 200px;
+}
+
+.table-label{
+    font-weight: normal;font-family: PMN Caecilia;color: rgb(119,110,100);
+}
+
+td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+
+tr:last-child>td {     
+    border-bottom: 1px solid #ddd;
+}
+
+.localattribute{
+    font-size: 31px;
+    cursor: pointer;
+    margin-bottom: 13px;
+    margin-top: -8px;
+}
+
+.image-attr {
+    height: 100px;
+}
+
+.attr-local {
+}
+
+.attr-global {
+    background-color: #cce2ec;
+}
+
+.attr-global-overridden {
+    background-color: #e8eff2;
+}
+
+
+#removeAttribute{
+    font-weight: bolder;
+    color: #e5173f;
+}

@@ -1,0 +1,19 @@
+<div fxLayout="column">
+    <div fxLayoutAlign="end">
+        <mat-icon id="clear" (click)="closeDialog()" style="cursor:pointer">
+            clear
+        </mat-icon>
+    </div>
+    <div fxLayoutAlign="center center">
+        <p class="p1">{{data.message}}
+        </p>
+    </div>
+    <div fxLayoutAlign="center center">
+        <p class="p2">{{data?.name}}
+        </p>
+    </div>
+    <div fxLayoutAlign="center center" style="margin:20px 0px 40px 0px">
+        <button mat-raised-button type="button" [mat-dialog-close]="false" id="no-button" style="margin-right:30px" class="button-color">Cancel</button>
+        <button mat-raised-button [mat-dialog-close]="true" id="yes-button" type="button" class="button-color">Yes</button>
+    </div>
+</div>

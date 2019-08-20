@@ -1,0 +1,209 @@
+<div *ngIf="showdefaultForm">
+  <h2 style="margin:5px 0px 10px 0px;">
+    Create a New Attribute </h2>
+  <form [formGroup]="form" novalidate (ngSubmit)="OnSubmit()">
+    <table class="attribute-full-width" cellspacing="2">
+      <tr>
+        <td>
+          <mat-form-field>
+            <input matInput required placeholder="Attribute Name" formControlName="name">
+            <mat-error *ngIf="form.controls['name'].invalid">
+              Please enter a Name
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field>
+            <input matInput required placeholder="Attribute Tag" (focusout)="findTagExists()" pattern="^[A-Z_0-9]*$" formControlName="tag">
+            <mat-error *ngIf="form.controls['tag'].invalid && !form.controls['tag'].value">
+              Please enter a Standard Tag
+            </mat-error>
+            <mat-error *ngIf="form.controls['tag'].errors?.pattern && form.controls['tag'].value">
+              Please enter a Valid Standard Tag
+            </mat-error>
+            <mat-error *ngIf="form.controls['tag'].errors?.tagExists && form.controls['tag'].touched">
+              Tag already exists! Create a new one.
+            </mat-error>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-form-field>
+            <input matInput required placeholder="JSON Attribute Name" formControlName="objectName">
+            <mat-error *ngIf="form.controls['objectName'].invalid">
+              Please enter a valid JSON Attribute Name
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field>
+            <mat-select placeholder="Scope" required formControlName="scope">
+              <mat-option *ngFor="let scopeValues of scopes" [value]="scopeValues.tag">
+                {{ scopeValues.value }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['scope'].invalid">
+              Please Select a Value
+            </mat-error>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-form-field>
+            <mat-select placeholder="Attribute Type" required formControlName="typetag">
+              <mat-option *ngFor="let attributeTypeValues of attributeTypes" [value]="attributeTypeValues.tag">
+                {{ attributeTypeValues.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['typetag'].invalid">
+              Please Select a Value
+            </mat-error>
+          </mat-form-field>
+        </td>
+
+        <td *ngIf="form.controls['typetag'].value !== 'SELECT'" [ngSwitch]="form.controls['typetag'].value">
+          <mat-form-field *ngSwitchCase="'TEXT'">
+            <input matInput placeholder="Default Value" type="text" formControlName="defaultValue">
+          </mat-form-field>
+          <mat-form-field *ngSwitchCase="'NUM'">
+            <input matInput type="number" (focusout)="numberValidation()" placeholder="Default Value" formControlName="defaultValue">
+            <mat-error *ngIf="form.controls['defaultValue'].invalid">
+              Please enter a valid value (eg:23.50)
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field *ngSwitchCase="'BOOL'">
+            <mat-select placeholder="Default Value" formControlName="defaultValue">
+              <mat-option *ngFor="let requiredTypeValues of defaultRequiredTypes" [value]="requiredTypeValues.tag">
+                {{ requiredTypeValues.value }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field *ngSwitchCase="'DATE'">
+            <input matInput [matDatepicker]="picker" required="false" formControlName="defaultValue" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="form.controls['defaultValue'].invalid">
+              Please enter a valid date
+            </mat-error>
+          </mat-form-field>
+            <input type="text" matInput  ngxDaterangepickerMd class="form-control" placeholder="Default Value" autoApply="true" (keyup)="dateRangeUpdated($event)"
+                   showCancel="true"  formControlName="defaultValue" *ngSwitchCase="'DATERANGE'">
+
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-form-field>
+            <mat-select placeholder="Required" required formControlName="required">
+              <mat-option *ngFor="let requiredTypeValues of requiredTypes" [value]="requiredTypeValues.tag">
+                {{ requiredTypeValues.value }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['required'].invalid">
+              Please Select a Value
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field>
+                        <textarea matInput placeholder="Description" maxlength="256"
+                                  #message formControlName="description"></textarea>
+            <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-form-field>
+            <mat-select placeholder="Locked" required formControlName="locked"  matTooltip="This will prevent deletion of the attribute">
+              <mat-option *ngFor="let requiredTypeValues of requiredTypes" [value]="requiredTypeValues.tag">
+                {{ requiredTypeValues.value }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['locked'].invalid">
+              Please Select a Value
+            </mat-error>
+          </mat-form-field>
+        </td>
+      </tr>
+
+    </table>
+    <div fxLayoutAlign="center center">
+      <button mat-raised-button type="button" matTooltip="Cancel creating Attribute"
+              (click)="onNoClick()" style="margin-right:60px"
+              class="button-color">Cancel</button>
+      <button mat-raised-button matTooltip="Submit Attribute" type="submit" [disabled]="user.isReadOnly" class="button-color">Save
+        <span *ngIf="form.controls['typetag'].value === 'SELECT'">
+                    & Add List Values
+                </span>
+      </button>
+    </div>
+  </form>
+</div>
+<div fxLayout="column" fxFlexOffset="5" style="margin-right:5%" class="selectValue-full-width" *ngIf="!showdefaultForm">
+  <div fxLayoutAlign="center center" style="font-size:22px;margin-bottom:10px">
+    Add {{name | titlecase}}'s
+  </div>
+  <div fxLayoutAlign="center center" style="font-size:22px;margin-bottom:10px">
+    List Values
+  </div>
+  <form [formGroup]="selectForm" novalidate (ngSubmit)="selectValuesSubmit()">
+    <div fxLayout="row" style="font-size:18px;padding-bottom:20px">
+      <div fxFlex="70" style="padding-bottom: 15px;
+            border-bottom: 2px solid #ddd;">
+        List Values
+      </div>
+      <div fxFlex="15" style="padding-bottom: 15px;
+            border-bottom: 2px solid #ddd;">
+        Default
+      </div>
+      <div fxFlexOffset="15">
+
+      </div>
+    </div>
+    <div fxLayout="column" formArrayName="selectValues" style="height: 350px;overflow: auto;">
+      <div style="width:500px" *ngFor="let selectValue of selectForm.get('selectValues').controls;let i = index">
+        <div [formGroupName]="i">
+          <div fxFlex="70">
+            <mat-form-field style="width:100%">
+              <input matInput required (focusout)="valueExists(i)" placeholder="List Value" formControlName="selectedValue">
+              <mat-error
+                *ngIf="selectForm.get('selectValues').controls[i].controls['selectedValue'].invalid &&
+                            !selectForm.get('selectValues').controls[i].controls['selectedValue'].value">Enter a List Value</mat-error>
+              <mat-error *ngIf="selectForm.get('selectValues').controls[i].controls['selectedValue'].errors?.duplicate">Duplicate Value</mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="15" style="padding-top: 20px;padding-left: 22px;">
+            <mat-checkbox formControlName="checkBox" (change)="defaultValueExists(i)"></mat-checkbox>
+            <mat-error *ngIf="checkBoxValue">Select a Default Value</mat-error>
+          </div>
+          <div fxFlex="15" style="padding-top:10px">
+            <button mat-icon-button *ngIf="i == 0" (click)="addSelectedValues(i)">
+              <mat-icon style="font-size: 34px;font-weight: bolder;color: #e5173f;padding-right:7px"
+                        matTooltip="Add a List Value">
+                add
+              </mat-icon>
+            </button>
+            <button mat-icon-button *ngIf="i != 0" (click)="removeSelectedValues(i)">
+              <mat-icon style="font-size: 34px;font-weight: bolder;color: #e5173f;padding-right:7px"
+                        matTooltip="Remove this List Value">
+                remove
+              </mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxLayoutAlign="center center" style="margin-top:20px">
+      <button mat-raised-button type="button" matTooltip="Cancel creating Attribute"
+              (click)="onNoClick()" style="margin-right:60px"
+              class="button-color">Cancel</button>
+      <button mat-raised-button matTooltip="Submit Attribute" type="submit" class="button-color">Save
+      </button>
+    </div>
+  </form>
+</div>
+
+

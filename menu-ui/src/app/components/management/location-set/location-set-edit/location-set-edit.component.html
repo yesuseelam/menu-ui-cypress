@@ -1,0 +1,66 @@
+<div *ngIf="locationSet"  fxFlex="column">
+    <h2>Location Set</h2>
+    <form style="flex-direction:column" [formGroup]="form" class="locationSetType-list" novalidate (ngSubmit)="OnSubmit()">
+        <div fxFlex="row" class="edit-margin">
+            <div fxFlex="39">
+                <label>
+                    Tag
+                </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" class="tag">
+                {{locationSet.tag}}
+            </div>
+        </div>
+        <div fxFlex="row" class="edit-margin">
+            <div fxFlex="39">
+                <label>
+                    Location Set Type
+                </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap">
+                {{locationSet.scope}}
+
+            </div>
+        </div>
+        <div fxFlex="row" class="edit-margin">
+            <div fxFlex="39">
+                <label>
+                    Name
+                    <span style="display: inline-block;vertical-align: middle;">
+                        <mat-icon style="font-size:7px;color:#6c635a">star</mat-icon>
+                    </span>
+                </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap">
+                <input class="form-control" required formControlName="name">
+            </div>
+        </div>
+
+        <div fxFlex="row" class="edit-margin">
+            <div fxFlex="39">
+                <label>
+                    Description
+                </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+                <textarea rows="3" class="form-control"  formControlName="description"></textarea>
+            </div>
+        </div>
+
+        <div fxFlex="row" fxLayoutAlign="center center" style="margin:30px 0px">
+            <button type="button" (click)="onCancel()" matTooltip="Cancel" [disabled]="form.pristine" mat-raised-button style="margin-right:30px;background-color:#e5173f;color:white">
+                Cancel
+            </button>
+            <button type="submit" [disabled]="form.pristine || form.invalid|| user.isReadOnly" matTooltip="Update Location Set" mat-raised-button style="margin-left:30px;background-color:#e5173f;color:white">
+                Update
+            </button>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+

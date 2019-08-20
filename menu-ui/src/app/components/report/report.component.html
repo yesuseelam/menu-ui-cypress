@@ -1,0 +1,102 @@
+<div fxFlex="column" id="heading">
+    <div fxFlexFill fxFlex="auto">
+        <a fxHide.xs [fxFlex]="pushMenuToggle ? 0 : 23" [fxFlexOffset]="pushMenuToggle ? 0 : 2">
+            <mat-card fxFlexFill [ngClass]="{'visible': pushMenuToggle}" style="padding:0px">
+                <div fxFlex="column" id="sidenav-tab2" fxLayoutAlign="start">
+                    <p *ngFor="let screen of screens" class="destination-heading" (click)="selectedScreen(screen)">
+                        <span *ngIf="screen.selected" class="bull" style="margin-left:-13px">&#8226;</span>
+                        <span [ngClass]="{'selected': screen.selected}">
+                            {{screen?.name}}
+                        </span>
+                    </p>
+                </div>
+            </mat-card>
+        </a>
+        <a [fxFlex]="pushMenuToggle ? 98 : 73" fxFlex.xs="98" [fxFlexOffset]="pushMenuToggle ? 2 : 1" fxFlexOffset.xs="2">
+            <mat-card fxFlexFill class="push-menu">
+                <div fxLayout="column">
+                    <div fxLayout="row" style="padding-top:10px;height:60px">
+                        <button mat-icon-button (click)="pushMenuToggle = !pushMenuToggle" fxFlex="4" style="margin-left: 3px;">
+                            <mat-icon style="font-weight: 500;font-size: 30px;">
+                                reorder
+                            </mat-icon>
+                        </button>
+                        <p class="destination-heading">
+                            {{destinationHeading}}
+                        </p>
+                    </div>
+                    <div fxLayout="row" style="border-bottom:1px solid #eee">
+                    </div>
+                    <div class="attribute-list">
+                            <mat-progress-spinner *ngIf="disableBtnClick" style="margin: 40px auto;" 
+                            [color]="color" [mode]="mode" [diameter]="diameter">
+                            </mat-progress-spinner>
+                        <div *ngIf="destinationHeading==='Global Menus' && !disableBtnClick" fxLayout="row" style="padding-top: 100px" fxLayoutAlign="center center">
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="selectedDestination" placeholder="Select a Destination" data-cy="selectglobal">
+                                    <mat-option *ngFor="let destination of destinations" [value]="destination.tag">{{destination.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <!-- <a class="btn btn-clear" [href]="downloadJsonHref" [download]="heading"> -->
+
+                            <button mat-raised-button type="button" matTooltip="Download Global Menu" 
+                            [disabled]="!selectedDestination || disableBtnClick" style="margin-left:20px"
+                                (click)="getGlobalMenu()" class="button-color">
+                                <mat-icon>file_download</mat-icon>
+                                Download
+                            </button>
+                            <!-- </a> -->
+                        </div>
+                        <div *ngIf="destinationHeading==='Nutrition' && !disableBtnClick" fxLayout="row" style="padding-top: 100px" fxLayoutAlign="center center">
+                                <!-- <a class="btn btn-clear" [href]="downloadJsonHref" [download]="heading">             -->
+
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="selectedCountry" placeholder="Select a Country">
+                                    <mat-option *ngFor="let country of countries" [value]="country.code">{{country.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <button mat-raised-button type="button" [disabled]="!selectedCountry || disableBtnClick"
+                                        matTooltip="Download Nutrition" (click)="getNutrition()" 
+                                        class="button-color" style="margin-left:20px">
+                                            <mat-icon>file_download</mat-icon>
+                                            Download
+                                        </button>
+                                <!-- </a> -->
+                        </div>
+                        <div *ngIf="destinationHeading==='Location Specific Menus' && !disableBtnClick" fxLayout="column" style="padding-top: 100px" fxLayoutAlign="center center">
+                            <mat-form-field id="location-set-type">
+                                <input matInput placeholder="Type location name for selections" aria-label="Location Set" [matAutocomplete]="auto" [formControl]="locationCtrl">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let location of filteredLocations" [value]="location" (onSelectionChange)="getDestinationsByLocation(location)">
+                                        <span>{{ location.tag+ " "}}</span> <span>{{ location.name}}</span>
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <button *ngIf="locationCtrl.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetLocationSetCntrl()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            <mat-form-field>
+                                    <mat-select [(ngModel)]="selectedDestination" placeholder="Select a Destination">
+                                        <mat-option *ngFor="let destination of destinations" [value]="destination.tag">{{destination.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            <button mat-raised-button type="button" 
+                            matTooltip="Download Global Menu" [disabled]="!locationCtrl.value || !selectedDestination || disableBtnClick" 
+                            style="margin-left:20px"
+                                (click)="getLocationSpecificMenu()" class="button-color">
+                                <mat-icon>file_download</mat-icon>
+                                Download
+                            </button>
+                        </div>
+                        <div *ngIf="errorDisplay" fxLayoutAlign="center center" fxLayout="row">
+                            <p style="font-family:PMN Caecilia Bold">
+                                   Something Went Down with {{errorMessage}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+        </a>
+    </div>
+</div>

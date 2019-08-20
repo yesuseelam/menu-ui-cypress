@@ -1,0 +1,49 @@
+<div class="node-tree">
+  <div *ngIf="isEmpty">No SubMenus exists under destination tag {{menuKey.destination}}</div>
+  <mat-progress-spinner *ngIf="isLoading" style="margin: 40px auto;" color="#e5173f" mode="indeterminate" diameter="50">
+  </mat-progress-spinner>
+  <tree-root [nodes]="nodes" [options]="options" (moveNode)="onMoveNode($event)" *ngIf="menuKey">
+    <ng-template #treeNodeTemplate let-node let-index="index">
+      <span [ngClass]="{'node-disabled' : node.data.data.disabled, 'node' : true }" [contextMenu]="basicMenu"
+            [contextMenuSubject]="node.data">{{ node.data.name }}</span>
+
+      <context-menu #basicMenu [disabled]="user.isReadOnly">
+        <ng-template contextMenuItem>
+          <button class="context-color" mat-button (click)="addItem(node)">
+            <mat-icon>add</mat-icon>
+            <span>Add Item</span>
+          </button>
+        </ng-template>
+        <ng-template contextMenuItem>
+          <button class="context-color" mat-button (click)="toggleEnabled(node)">
+            <mat-icon>{{node.data.data.disabled ? "visibility" : "visibility_off"}}</mat-icon>
+            <span>{{node.data.data.disabled ? "Enable" : "Disable"}}</span>
+          </button>
+        </ng-template>
+        <ng-template contextMenuItem>
+          <button class="context-color" mat-button (click)="deleteItem(node)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </ng-template>
+        <ng-template [visible]="!isSubmenu(node)" contextMenuItem>
+          <button class="context-color cascade-divider" mat-button (click)="addItemCascade(node)">
+            <mat-icon>add_to_photos</mat-icon>
+            <span>Add Cascade</span>
+          </button>
+        </ng-template>
+        <ng-template [visible]="node.data.data.childCount > 0 && !isSubmenu(node)" contextMenuItem>
+          <button class="context-color" mat-button (click)="deleteItemCascade(node)">
+            <mat-icon>delete_sweep</mat-icon>
+            <span>Delete Cascade</span>
+          </button>
+        </ng-template>
+      </context-menu>
+    </ng-template>
+  </tree-root>
+</div>
+<div *ngIf="isMenuSelected">
+  <button [disabled]="user.isReadOnly" (click)="toggleDragAndDrop()" style="width: 100%" [textContent]="dragAndDropButtonText" matTooltip="Be aware that drag & drop works by position.  This may lead to unintended consequences to child menus if they do not have a similar structure."
+          mat-raised-button mat-button>
+  </button>
+</div>

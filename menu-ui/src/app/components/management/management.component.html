@@ -1,0 +1,41 @@
+<div fxFlex="column" id="heading">
+    <div fxFlexFill fxFlex="auto">
+        <div fxFlexFill fxFlex="20" fxHide.sm fxHide.xs fxFlexOffset="1">
+            <mat-card>
+                <div fxFlex="column" id="sidenav-tab2" fxLayoutAlign="start">
+                    <a mat-button routerLink="./items" fxFlexOffset="1" routerLinkActive="span-active">
+                        <span class="bull">&#8226;</span>
+                        <span class="inner-tab">Items</span>
+                    </a>
+                    <a mat-button fxFlexOffset="1" routerLink="./item-groupings" routerLinkActive="span-active">
+                        <span class="bull">&#8226;</span>
+                        <span class="inner-tab">Item Groupings</span>
+                    </a>
+                    <a mat-button fxFlexOffset="1" routerLink="./item-types" routerLinkActive="span-active">
+                        <span class="bull">&#8226;</span>
+                        <span class="inner-tab">Item Types</span>
+                    </a>
+                    <a mat-button fxFlexOffset="1" routerLink="./location-set-types" routerLinkActive="span-active">
+                        <span class="bull">&#8226;</span>
+                        <span class="inner-tab">Location Set Types</span>
+                    </a>
+                    <a mat-button fxFlexOffset="1" routerLink="./location-sets" routerLinkActive="span-active">
+                        <span class="bull">&#8226;</span>
+                        <span class="inner-tab">Location Sets</span>
+                    </a>
+                    <a mat-button fxFlexOffset="1" routerLink="./attributes" routerLinkActive="span-active">
+                        <span class="bull">&#8226;</span>
+                        <span class="inner-tab">Attributes</span>
+                    </a>
+                  <a mat-button fxFlexOffset="1" routerLink="./emergencyitems" routerLinkActive="span-active">
+                    <span class="bull">&#8226;</span>
+                    <span class="inner-tab">Operator Emergency</span>
+                  </a>
+                </div>
+            </mat-card>
+        </div>
+        <div fxFlexFill fxFlex="77" fxFlex.lt-md="98" fxFlexOffset="1">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

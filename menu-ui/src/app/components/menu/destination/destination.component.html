@@ -1,0 +1,31 @@
+<mat-progress-spinner *ngIf="isLoading" style="margin: 40px auto;" color="#e5173f" mode="indeterminate" diameter="50">
+</mat-progress-spinner>
+<div id="d1" fxLayoutAlign="end" *ngIf="destinationMappings">
+
+    <!-- This is for adding menu destinations for local purposes only -->
+    <div *ngIf="!showAllDestinations">
+  <button mat-icon-button (click)="openCreateDestinationDialog()">
+        <span matTooltip="Create an Destination">
+            <mat-icon id="add">
+                add
+            </mat-icon>
+        </span>
+  </button>
+</div>
+
+    <button *ngIf="showCopyMenu" mat-icon-button (click)="openCopyMenuDialog()">
+        <span matTooltip="Copy a Menu">
+            <mat-icon id="copy">
+                file_copy
+            </mat-icon>
+        </span>
+    </button>
+</div>
+<div id="d2">
+  <p *ngFor="let destination of destinationMappings" [contextMenu]="basicMenu"
+     [contextMenuSubject]="destination" (click)="selectDestination(destination)">
+        <span [ngClass]="{'selected': destination.selected}">
+            {{destination.name}}
+        </span>
+  </p>
+</div>

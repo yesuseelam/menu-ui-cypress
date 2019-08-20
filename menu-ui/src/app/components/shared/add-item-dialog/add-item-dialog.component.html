@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Add Item</h1>
+<div mat-dialog-content>
+    <mat-form-field>
+        <input matInput placeholder="Start typing" [matAutocomplete]="auto" [formControl]="input" ngModel="input">
+    </mat-form-field>
+
+    <mat-autocomplete (optionSelected)="itemSelected($event)" #auto="matAutocomplete" panelWidth="555px" [displayWith]="displayFn" autoActiveFirstOption="true">
+        <mat-option *ngFor="let option of options" [value]="option">{{option.name}} ({{option.tag}})</mat-option>
+    </mat-autocomplete >
+</div>
+<div mat-dialog-actions>
+    <button  mat-raised-button matTooltip="Cancel" class="button-color" (click)="cancelAddItem()">Cancel</button>
+    <button mat-raised-button matTooltip="Save" [disabled]="!isItemSelected ||  user.isReadOnly" class="button-color" [mat-dialog-close]="input.value">Ok</button>
+</div>

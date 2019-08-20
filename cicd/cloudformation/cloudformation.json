@@ -1,0 +1,362 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Deploy Menu UI",
+    "Parameters": {
+        "Name": {
+            "Description": "Name of the angular project, will be used for resource names",
+            "Type": "String",
+            "Default": "project-name"
+        },
+        "WarpAccountAlias": {
+            "Description": "Alias of aws account that contains the warp deployment buckets",
+            "Type": "String",
+            "Default": "awsaccountname"
+        },
+        "CurrentAccountAlias": {
+            "Description": "Alias of aws account that is currently being deployed to.",
+            "Type": "String",
+            "Default": "awsaccountname"
+        },
+        "Environment": {
+            "Type": "String",
+            "Default": "dev",
+            "Description": "Environment name",
+            "AllowedValues": [
+                "dev",
+                "test",
+                "prod",
+                "uat"
+            ],
+            "ConstraintDescription": "Must be one of dev, test, or prod"
+        },
+        "AppArtifact": {
+            "Type": "String",
+            "Description": "Name of file that contains lambda code",
+            "Default": ""
+        },
+        "CFAlias": {
+            "Type": "String",
+            "Description": "Alternate Domain Name for the CloudFront Distribution"
+        },
+        "AcmCertArn": {
+            "Type": "String",
+            "Description": "ACM Certificate ARN for the account domain"
+        },
+        "HostedZoneId": {
+            "Type": "String",
+            "Description": "Hosted Zone Name under which to create Route53 Custom Record"
+        },
+        "ForceCall": {
+            "Type": "String",
+            "Default": "YES"
+        }
+    },
+    "Resources": {
+        "S3Bucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Environment"
+                            },
+                            "-",
+                            {
+                                "Ref": "CurrentAccountAlias"
+                            },
+                            "-",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            "-",
+                            {
+                                "Ref": "Name"
+                            }
+                        ]
+                    ]
+                },
+                "WebsiteConfiguration": {
+                    "IndexDocument": "index.html"
+                }
+            }
+        },
+        "S3BucketPolicy": {
+            "DependsOn": [
+                "S3Bucket"
+            ],
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+                "Bucket": {
+                    "Ref": "S3Bucket"
+                },
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Sid": "1",
+                            "Effect": "Allow",
+                            "Action": [
+                                "s3:GetObject",
+                                "s3:PutObject",
+                                "s3:DeleteObject",
+                                "s3:GetBucketLocation",
+                                "s3:ListBucket"
+                            ],
+                            "Principal": {
+                                "AWS": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "arn:aws:iam::",
+                                            {
+                                                "Ref": "AWS::AccountId"
+                                            },
+                                            ":role/cfn-upload-to-s3"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "Resource": [
+                                {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "arn:aws:s3:::",
+                                            {
+                                                "Ref": "S3Bucket"
+                                            },
+                                            "/*"
+                                        ]
+                                    ]
+                                },
+                                {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "arn:aws:s3:::",
+                                            {
+                                                "Ref": "S3Bucket"
+                                            },
+                                            ""
+                                        ]
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "Sid": "2",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "CanonicalUser": {
+                                    "Fn::GetAtt": [
+                                        "CloudfrontOriginAccessIdentity",
+                                        "S3CanonicalUserId"
+                                    ]
+                                }
+                            },
+                            "Action": "s3:GetObject",
+                            "Resource": [
+                                {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "arn:aws:s3:::",
+                                            {
+                                                "Ref": "S3Bucket"
+                                            },
+                                            "/*"
+                                        ]
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "S3BucketUpload": {
+            "DependsOn": [
+                "S3Bucket",
+                "S3BucketPolicy"
+            ],
+            "Type": "AWS::CloudFormation::CustomResource",
+            "Properties": {
+                "ServiceToken": {
+                    "Fn::Join": [
+                        ":",
+                        [
+                            "arn:aws:lambda:us-east-1",
+                            {
+                                "Ref": "AWS::AccountId"
+                            },
+                            "function:cfn-upload-to-s3"
+                        ]
+                    ]
+                },
+                "Description": "Deploying artifact to S3 Bucket",
+                "SourceBucket": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Environment"
+                            },
+                            "-",
+                            {
+                                "Ref": "WarpAccountAlias"
+                            },
+                            "-",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            "-deployment"
+                        ]
+                    ]
+                },
+                "SourceKey": {
+                    "Ref": "AppArtifact"
+                },
+                "ToBucket": {
+                    "Ref": "S3Bucket"
+                },
+                "Region": "us-east-1"
+            }
+        },
+        "CloudfrontOriginAccessIdentity": {
+            "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+            "Properties": {
+                "CloudFrontOriginAccessIdentityConfig": {
+                    "Comment": "This is the CloudfrontOriginAccessIdentity"
+                }
+            }
+        },
+        "CloudfrontDistribution": {
+            "DependsOn": [
+                "S3Bucket",
+                "CloudfrontOriginAccessIdentity"
+            ],
+            "Type": "AWS::CloudFront::Distribution",
+            "Properties": {
+                "DistributionConfig": {
+                    "Aliases": [{"Ref": "CFAlias"}],
+                    "ViewerCertificate": {
+                        "AcmCertificateArn": {"Ref": "AcmCertArn"} ,
+                        "SslSupportMethod": "sni-only"
+                    },
+                    "CustomErrorResponses": [
+                        {
+                            "ErrorCachingMinTTL": 300,
+                            "ErrorCode": 404,
+                            "ResponseCode": 200,
+                            "ResponsePagePath": "/index.html"
+                        },
+                        {
+                            "ErrorCachingMinTTL": 300,
+                            "ErrorCode": 403,
+                            "ResponseCode": 200,
+                            "ResponsePagePath": "/index.html"
+                        }
+                    ],
+                    "Origins": [
+                        {
+                            "DomainName": {
+                                "Fn::GetAtt": [
+                                    "S3Bucket",
+                                    "DomainName"
+                                ]
+                            },
+                            "Id": {
+                                "Fn::Sub": "${Environment}-${Name}-S3Origin"
+                            },
+                            "S3OriginConfig": {
+                                "OriginAccessIdentity": {
+                                    "Fn::Sub": "origin-access-identity/cloudfront/${CloudfrontOriginAccessIdentity}"
+                                }
+                            }
+                        }
+                    ],
+                    "Enabled": true,
+                    "Comment": {
+                        "Fn::Sub": "CloudFront distribution created for ${Environment}-${Name} via CloudFormation Template"
+                    },
+                    "DefaultRootObject": "index.html",
+                    "DefaultCacheBehavior": {
+                        "AllowedMethods": [
+                            "DELETE",
+                            "GET",
+                            "HEAD",
+                            "OPTIONS",
+                            "PATCH",
+                            "POST",
+                            "PUT"
+                        ],
+                        "TargetOriginId": {
+                            "Fn::Sub": "${Environment}-${Name}-S3Origin"
+                        },
+                        "ForwardedValues": {
+                            "QueryString": true,
+                            "Cookies": {
+                                "Forward": "none"
+                            }
+                        },
+                        "ViewerProtocolPolicy": "allow-all"
+                    }
+                }
+            }
+        },
+        "Route53Record": {
+            "DependsOn": [
+                "CloudfrontDistribution"
+            ],
+            "Type": "AWS::Route53::RecordSet",
+            "Properties": {
+                    "AliasTarget": {
+                        "DNSName": {
+                            "Fn::GetAtt": [
+                                "CloudfrontDistribution",
+                                "DomainName"
+                            ]
+                        },
+                        "HostedZoneId": "Z2FDTNDATAQYW2"
+                    },
+                "HostedZoneId": {"Ref": "HostedZoneId"},
+                "Name": {"Ref": "CFAlias"},
+                "Type": "A"
+            }
+                
+        },
+        "InvalidateCloudformationDistribution": {
+            "Type": "Custom::AwsCliCommand",
+            "Properties": {
+                "ForceCall": { "Ref": "ForceCall" },
+                "Command": {
+                    "Fn::Sub": "cloudfront create-invalidation --distribution-id ${CloudfrontDistribution} --paths /*"
+                },
+                "ServiceToken": {
+                    "Fn::Sub": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:cfn-aws-cli-exec"
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "BucketDomainName": {
+            "Description": "Bucket Domain Name",
+            "Value": {
+                "Fn::GetAtt": [
+                    "S3Bucket",
+                    "DomainName"
+                ]
+            }
+        },
+        "CloudfrontDomainName": {
+            "Description": "Url to access the cloudfront distribution",
+            "Value": {
+                "Fn::GetAtt": [
+                    "CloudfrontDistribution",
+                    "DomainName"
+                ]
+            }
+        }
+    }
+}

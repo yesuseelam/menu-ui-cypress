@@ -1,0 +1,74 @@
+<div fxLayout="row">
+  <div fxLayout="column" fxFlex="60">
+    <mat-card>
+      <div fxFlex="row" id="moz-fixed-height" style="max-height:70px !important">
+        <div fxFlex="93" style="height:70px">
+          <mat-form-field class="select-full-width">
+            <mat-select [(ngModel)]="selected">
+              <mat-option *ngFor="let dropdown of selectDropDown" [value]="dropdown.tag">
+                {{dropdown.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field floatLabel="never" class="full-width">
+            <input matInput placeholder="Search for an Item / Modifier" type="text" matTooltip="Search for an Item/ Modifier" [(ngModel)]="search">
+            <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+        </div>
+        <div fxFlex="7" fxLayoutAlign="start" style="margin-top:17px;height:55px">
+          <button mat-icon-button (click)="openCreateItemDialog()">
+                        <span matTooltip="Create an Item">
+                            <mat-icon id="add">
+                                add
+                            </mat-icon>
+                        </span>
+          </button>
+        </div>
+      </div>
+      <div id="line-spacing">
+      </div>
+      <div class="attribute-list">
+        <mat-list id="management-list">
+          <mat-list-item id="item-groupings" *ngFor="let item of items | itemSearchFilter: search: selected; let i = index" [ngClass]="{'selected-bold': item?.selected}"
+                         [contextMenu]="basicMenu" [contextMenuSubject]="item">
+            <button mat-button (click)="makeBold(item)">
+              <span class="bull">&#8226;</span>
+              <span [ngClass]="{'item-disabled': !item.enabled}" [innerHTML]="item.name  | highlight : search"></span>
+            </button>
+            <context-menu #basicMenu [disabled]="user.isReadOnly">
+              <ng-template contextMenuItem>
+                <button mat-button class="context-color" [disabled]="item.locked" (click)="removeItem(item, i)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </ng-template>
+              <ng-template contextMenuItem>
+                <button class="context-color" mat-button (click)="toggleEnabled(item)">
+                  <mat-icon>{{item.enabled ? "visibility_off" : "visibility"}}</mat-icon>
+                  <span>{{item.enabled ? "Disable" : "Enable"}}</span>
+                </button>
+              </ng-template>
+            </context-menu>
+          </mat-list-item>
+        </mat-list>
+        <mat-progress-spinner *ngIf="spinner" style="margin: 40px auto;" [color]="color" [mode]="mode" [diameter]="diameter">
+        </mat-progress-spinner>
+      </div>
+
+      <br/>
+      <div>
+        <button (click)="reloadFromProd()" style="width: 100%;" matTooltip="Feature only available while in development" [textContent]="reloadButtonText" [disabled]="disableBtnClick" mat-raised-button></button>
+        <mat-progress-bar *ngIf="reloadingFromProd" mode="indeterminate"></mat-progress-bar>
+      </div>
+
+    </mat-card>
+  </div>
+  <div fxFlex="40" fxFlexOffset="1">
+    <mat-card style="height:100%">
+      <app-item-edit [inputItem]="selectedItem" (itemChanged)="itemChange($event)">>
+      </app-item-edit>
+    </mat-card>
+  </div>
+</div>

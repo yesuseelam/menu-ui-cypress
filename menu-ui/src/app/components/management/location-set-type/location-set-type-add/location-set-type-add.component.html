@@ -1,0 +1,99 @@
+<div *ngIf="hide">
+    <h2 style="margin:5px 0px 10px 0px;">
+        Create a New Location Set Type </h2>
+    <form [formGroup]="form" novalidate (ngSubmit)="OnSubmit()">
+        <table class="attribute-full-width" cellspacing="2">
+            <tr>
+                <td>
+                    <mat-form-field>
+                        <input matInput required placeholder="Name" formControlName="name">
+                        <mat-error *ngIf="form.controls['name'].invalid">
+                            Please enter a Name
+                        </mat-error>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <input matInput required placeholder="Tag" (focusout)="findTagExists()" pattern="^[A-Z_0-9]*$" formControlName="tag">
+                        <mat-error *ngIf="form.controls['tag'].invalid && !form.controls['tag'].value">
+                            Please enter a Standard Tag
+                        </mat-error>
+                        <mat-error *ngIf="form.controls['tag'].errors?.pattern && form.controls['tag'].value">
+                            Please enter a Valid Standard Tag
+                        </mat-error>
+                        <mat-error *ngIf="form.controls['tag'].errors?.tagExists && form.controls['tag'].touched">
+                            Tag already exists! Create a new one.
+                        </mat-error>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field>
+                        <input matInput required placeholder="Weight" type="number" pattern="^[0-9]+(\.[0-9]{1,2})?$"
+                         formControlName="weight">
+                        <mat-error *ngIf="form.controls['weight'].invalid && !form.controls['weight'].value">
+                            Please enter a Value
+                        </mat-error>
+                        <mat-error *ngIf="form.controls['weight'].errors?.pattern && form.controls['weight'].value">
+                            Please enter a Valid Value
+                        </mat-error>
+
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <textarea matInput placeholder="Description" maxlength="256" 
+                        #message formControlName="description"></textarea>
+                        <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr><td>
+                <mat-form-field>
+                    <mat-select placeholder="Locked" formControlName="locked"  matTooltip="This will prevent deletion of the location-set-type">
+                        <mat-option [value]="true">
+                            True
+                        </mat-option>
+                        <mat-option [value]="false">
+                            False
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field></td>
+            </tr>
+        </table>
+        <div fxLayoutAlign="center center" style="margin-top:30px">
+            <button mat-raised-button type="button" matTooltip="Cancel creating LocationSetType" 
+            (click)="onNoClick()" style="margin-right:60px"
+                class="button-color">Cancel</button>
+            <button mat-raised-button matTooltip="Save" type="submit" [disabled]="user.isReadOnly" class="button-color">Save
+            </button>
+        </div>
+    </form>
+</div>
+
+<div fxLayout="column" *ngIf="!hide">
+    <div fxLayoutAlign="end">
+        <mat-icon id="clear" (click)="onNoClick()" style="cursor:pointer">
+            clear
+        </mat-icon>
+    </div>
+    <div fxLayoutAlign="center center">
+        <p class="p1">Are you sure you want to delete
+        </p>
+    </div>
+    <div fxLayoutAlign="center center">
+        <p class="p2">{{data?.locationSetType.name}} ?
+        </p>
+    </div>
+    <p class="p3" *ngIf="cannotDeleteItem">Cannot delete. {{data?.locationSetType.name | titlecase}} is used elsewhere</p>        
+    <div fxLayoutAlign="center center" style="margin:20px 0px 40px 0px">
+        <button mat-raised-button matTooltip="Delete LocationSetType" type="button" 
+        style="margin-right:30px" (click)="removeLocationSetType()"
+            class="button-color">Yes
+        </button>
+        <button mat-raised-button type="button" matTooltip="Cancel deleting LocationSetType" 
+        (click)="onNoClick()" class="button-color">No</button>
+    </div>
+</div>

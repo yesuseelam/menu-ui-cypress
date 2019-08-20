@@ -1,0 +1,63 @@
+<div *ngIf="showCreateLocationSet">
+    <h2 style="margin:5px 0px 10px 0px;">
+        Create a New LocationSet </h2>
+    <form [formGroup]="form" novalidate (ngSubmit)="OnSubmit()">
+        <table class="attribute-full-width" cellspacing="2">
+            <tr>
+                <td>
+                    <mat-form-field>
+                        <input matInput required placeholder="LocationSet Name" formControlName="name">
+                        <mat-error *ngIf="form.controls['name'].invalid">
+                            Please enter a Name
+                        </mat-error>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <input matInput required placeholder="LocationSet Tag" (focusout)="findTagExists()" pattern="^[A-Z_0-9]*$" formControlName="tag">
+                        <mat-error *ngIf="form.controls['tag'].invalid && !form.controls['tag'].value">
+                            Please enter a Standard Tag
+                        </mat-error>
+                        <mat-error *ngIf="form.controls['tag'].errors?.pattern && form.controls['tag'].value">
+                            Please enter a Valid Standard Tag
+                        </mat-error>
+                        <mat-error *ngIf="form.controls['tag'].errors?.tagExists && form.controls['tag'].touched">
+                            Tag already exists! Create a new one.
+                        </mat-error>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field>
+                         <mat-select placeholder="Location Set Type" required formControlName="locationSetType">
+                            <mat-option *ngFor="let locationSetType of locationSetTypes" [value]="locationSetType.tag">
+                                {{locationSetType.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.controls['locationSetType'].invalid">
+                            Please enter a Value
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-error *ngIf="locationSetTypes.length === 0">
+                        No valid location set types
+                    </mat-error>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <textarea matInput placeholder="Description" maxlength="256" 
+                        #message formControlName="description"></textarea>
+                        <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                    </mat-form-field>
+                </td>
+            </tr>
+        </table>
+        <div fxLayoutAlign="center center" style="margin-top:30px">
+            <button mat-raised-button type="button" matTooltip="Cancel creating LocationSet"
+            (click)="onNoClick()" style="margin-right:60px"
+                class="button-color">Cancel</button>
+            <button mat-raised-button matTooltip="Submit LocationSet" type="submit" [disabled]="user.isReadOnly" class="button-color">Save
+            </button>
+        </div>
+    </form>
+</div>

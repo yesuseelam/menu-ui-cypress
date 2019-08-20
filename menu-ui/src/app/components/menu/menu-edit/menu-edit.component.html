@@ -1,0 +1,177 @@
+<mat-progress-spinner *ngIf="isLoading" style="margin: 40px auto;" color="#e5173f" mode="indeterminate" diameter="50">
+</mat-progress-spinner>
+
+<div fxFlex="column" style="width:100%" *ngIf="itemDetail && !isLoading">
+    <h2>Attributes</h2>
+    <form style="flex-direction:column" [formGroup]="itemForm" class="itemType-list"
+          novalidate (ngSubmit)="onSubmit()">
+        <div fxFlex="row" class="edit-margin">
+            <div fxFlex="39">
+                <label>
+                    Tag
+                </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" class="tag">
+                {{itemDetail.tag}}
+                <br />
+                <span class="disabled-source">{{ itemDetail.disabledSource}}</span>
+            </div>
+        </div>
+        <div fxFlex="row" class="edit-margin">
+            <div fxFlex="39">
+                <label>
+                    Name
+                </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" class="tag">
+                <span [innerHtml]="itemDetail.name"></span>
+            </div>
+        </div>
+        <div fxFlex="row" class="edit-margin" *ngIf="!isSubMenuRoot">
+            <div fxFlex="39">
+                <label>
+                    Item Type
+                </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" class="tag">
+                <span [innerHtml]="itemDetail.typeName"></span>
+            </div>
+        </div>
+        <div fxFlex="row" class="edit-margin" *ngIf="itemDetail.itemPrice">
+            <div fxFlex="39">
+                <label>
+                    Item Price
+                </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" class="tag">
+                <span>{{itemDetail.itemPrice | currency}}</span>
+            </div>
+        </div>
+        <div fxFlex="row" style="margin:20px 15px 0px 0px">
+            <div fxFlex="80" style="font-family:PMN Caecilia Bold">
+
+            </div>
+            <div fxFlex="18" fxLayoutAlign="end">
+                <mat-form-field>
+                    <mat-select placeholder="Add New Attribute" (selectionChange)="addLocalAttribute($event)">
+                        <mat-option *ngFor="let attr of itemDetail.unassigned; let i = index"
+                                    [value]="i">{{attr.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxFlex="row" class="edit-margin" *ngFor="let attribute of itemDetail.attributes; let i = index">
+            <div fxFlex="39" style="padding-top:5px">
+                <label>
+                  <span>{{attribute.name}}</span>
+                    <span style="display: inline-block;vertical-align: middle;" *ngIf="attribute.required">
+                        <mat-icon style="font-size:7px;color:#6c635a">star</mat-icon>
+                    </span>
+                </label>
+            </div>
+
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap"
+                 *ngIf="attribute.type === 'TEXT'">
+                <input class="form-control" type="text" [formControlName]="attribute.jsonProperty" [ngClass]="getInputCssClass(attribute)"
+                       [required]="attribute.required" [placeholder]="attribute.name">
+                <span *ngIf="itemForm.controls[attribute.jsonProperty].invalid" style="color:#e5173f;font-size:14px">Enter a Value</span>
+            </div>
+
+          <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap"
+            *ngIf="attribute.type === 'DATE'">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="picker" [formControlName]="attribute.jsonProperty" placeholder="date"  [required]="attribute.required">
+          </div>
+
+          <div fxFlex="auto" fxFlexOffset="3" style="display:flex;flex-wrap:wrap;"
+            *ngIf="attribute.type === 'DATERANGE'">
+            <input type="text" [ngClass]="getInputCssClass(attribute)" class="form-control" autoApply="true" (keyup)="dateUpdated($event, attribute.jsonProperty)" ngxDaterangepickerMd [formControlName]="attribute.jsonProperty">
+          </div>
+
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap" *ngIf="attribute.type === 'TEXTAREA'">
+                <textarea matInput rows="3" [formControlName]="attribute.jsonProperty" class="form-control" [required]="attribute.required" [placeholder]="attribute.name" [ngClass]="getInputCssClass(attribute)"></textarea>
+                <span *ngIf="itemForm.controls[attribute.jsonProperty].invalid" style="color:#e5173f;font-size:14px">Enter a Value</span>
+            </div>
+
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap"
+                 *ngIf="attribute.type === 'NUM'">
+                <input class="form-control" type="number" [formControlName]="attribute.jsonProperty" [ngClass]="getInputCssClass(attribute)"
+                       [required]="attribute.required" [placeholder]="attribute.name">
+                <span *ngIf="itemForm.controls[attribute.jsonProperty].invalid" style="color:#e5173f;font-size:14px">Enter a Value</span>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap"
+                 *ngIf="attribute.type === 'BOOL'">
+                <select class="form-control" [formControlName]="attribute.jsonProperty" [required]="attribute.required" [ngClass]="getInputCssClass(attribute)">
+                    <option value="" *ngIf="!attribute.required">(empty)</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+                <span *ngIf="itemForm.controls[attribute.jsonProperty].invalid" style="color:#e5173f;font-size:14px">Enter a Value</span>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap"
+                 *ngIf="attribute.type === 'SELECT'">
+                <mat-select [formControlName]="attribute.jsonProperty" class="form-control" [ngClass]="getInputCssClass(attribute)"
+                            [required]="attribute.required">
+                    <mat-option *ngFor="let option of attribute.options"
+                                [value]="option.value">{{option.label}}</mat-option>
+                </mat-select>
+                <span *ngIf="itemForm.controls[attribute.jsonProperty].invalid" style="color:#e5173f;font-size:14px">Enter a Value</span>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap"
+                 *ngIf="attribute.type === 'MULTI_SELECT'">
+                <mat-form-field>
+                    <mat-select [formControlName]="attribute.jsonProperty" placeholder="Select"  [ngClass]="getInputCssClass(attribute)" multiple>
+                        <mat-option *ngIf="!allOptionsSelected(attribute)" (click)="selectAllOptions(attribute)">Select
+                            All
+                        </mat-option>
+                        <mat-option *ngIf="allOptionsSelected(attribute)" (click)="deselectAllOptions(attribute)">
+                            Deselect All
+                        </mat-option>
+                        <mat-divider></mat-divider>
+                        <mat-option *ngFor="let option of attribute.options"
+                                    [value]="option.value">{{option.label}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="attribute.scope == 'LOCAL'">
+                <button mat-icon-button (click)="removeLocalAttribute(i)" matTooltip="Remove Attribute">
+                    <mat-icon id="removeAttribute">
+                        delete_forever
+                    </mat-icon>
+                </button>
+            </div>
+        </div>
+        <div fxFlex="row" class="edit-margin-user">
+            <div fxFlex="39">
+                <label>
+                    Last Updated By
+                </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+
+            </div>
+        </div>
+        <div fxFlex="row" class="edit-margin-user">
+            <div fxFlex="39">
+                <label>
+                    Last Updated Date
+                </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+
+            </div>
+        </div>
+        <div fxFlex="row" fxLayoutAlign="center center" style="margin:30px 0px">
+            <button type="button" (click)="onCancel()" atTooltip="Cancel" mat-raised-button
+                    style="margin-right:30px;background-color:#e5173f;color:white">
+                Cancel
+            </button>
+            <button type="submit" [disabled]="itemForm.pristine || itemForm.invalid || user.isReadOnly" matTooltip="Update Attribute"
+                    mat-raised-button
+                    style="margin-left:30px;background-color:#e5173f;color:white">
+                Update
+            </button>
+        </div>
+    </form>
+</div>

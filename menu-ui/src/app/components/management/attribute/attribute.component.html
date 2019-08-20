@@ -1,0 +1,67 @@
+<div fxLayout="row">
+  <div fxLayout="column" fxFlex="60">
+    <mat-card>
+      <div fxFlex="row" id="moz-fixed-height" style="max-height:70px !important">
+        <div fxFlex="93" style="height:70px">
+          <mat-form-field class="select-full-width">
+            <mat-select [(ngModel)]="selected">
+              <mat-option *ngFor="let dropdown of selectDropDown" [value]="dropdown.tag">
+                {{dropdown.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Search for an Attribute"
+                   type="text" matTooltip="Search for an Attribute" [(ngModel)]="search">
+            <button *ngIf="search" matSuffix mat-icon-button
+                    aria-label="Clear" (click)="search=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div fxFlex="7" fxLayoutAlign="start" style="margin-top:17px;height:55px">
+          <button mat-icon-button (click)="openCreateAttributeDialog()">
+                   <span matTooltip="Create an Attribute">
+                        <mat-icon id="add">
+                                add
+                            </mat-icon>
+                   </span>
+          </button>
+        </div>
+      </div>
+      <div  id="line-spacing">
+      </div>
+      <div class="attribute-list">
+        <mat-progress-spinner *ngIf="spinner" style="margin: 40px auto;"
+                              [color]="color"
+                              [mode]="mode"
+                              [diameter]="diameter">
+        </mat-progress-spinner>
+        <mat-list id="management-list">
+          <mat-list-item *ngFor="let attribute of attributes | searchFilter: search:selected; let i = index"
+                         [ngClass]="{'selected-bold': attribute?.selected}" [contextMenu]="basicMenu"
+                         [contextMenuSubject]="attribute">
+            <button  mat-button
+                     (click)="makeBold(attribute)">
+              <span class="bull">&#8226;</span>
+              <span [innerHTML]="attribute.name  | highlight : search"></span>
+            </button>
+            <context-menu #basicMenu [disabled]="user.isReadOnly">
+              <ng-template contextMenuItem >
+                <button mat-button id="context-color" [disabled]="attribute.locked" (click)="removeAttribute(attribute, i)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </ng-template>
+            </context-menu>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-card>
+  </div>
+  <div  fxFlex="40" fxFlexOffset="1">
+    <mat-card style="height:100%">
+      <ng-container #attributeEditor></ng-container>
+      <app-attribute-edit [attributeTypes]="attributeTypes" [selectedAttribute]="selectedAttribute" (attributeChanged)="attributeChange($event)" [user]="user"></app-attribute-edit>
+    </mat-card>
+  </div>
+</div>

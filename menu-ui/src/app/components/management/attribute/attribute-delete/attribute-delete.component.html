@@ -1,0 +1,22 @@
+<div fxLayout="column">
+    <div fxLayoutAlign="end">
+        <mat-icon id="clear" (click)="onNoClick()" style="cursor:pointer">
+            clear
+        </mat-icon>
+    </div>
+    <div fxLayoutAlign="center center">
+        <p class="p1">Are you sure you want to delete
+        </p>
+    </div>
+    <div fxLayoutAlign="center center">
+        <p class="p2">{{data?.name}} ?
+        </p>
+    </div>
+    <p class="p3" *ngIf="cannotDeleteItem">Cannot delete. {{data?.name | titlecase}} is used elsewhere</p>    
+    <div fxLayoutAlign="center center" style="margin:20px 0px 40px 0px">
+        <button mat-raised-button matTooltip="Delete Attribute" type="button" style="margin-right:30px" (click)="removeAttribute()"
+            class="button-color">Yes
+        </button>
+        <button mat-raised-button type="button" matTooltip="Cancel deleting Attribute" (click)="onNoClick()" class="button-color">No</button>
+    </div>
+</div>

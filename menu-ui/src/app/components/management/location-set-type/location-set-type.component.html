@@ -1,0 +1,67 @@
+<div fxLayout="row">
+  <div fxLayout="column" fxFlex="60">
+    <mat-card>
+      <div fxFlex="row" id="moz-fixed-height" style="max-height:70px !important">
+        <div fxFlex="93" style="height:70px">
+          <mat-form-field class="select-full-width">
+            <mat-select [(ngModel)]="selectedDropDown" (selectionChange)="changeDropDown()">
+              <mat-option *ngFor="let dropdown of selectDropDown" [value]="dropdown.tag">
+                {{dropdown.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Search for a Location Set Type"
+                   type="text" matTooltip="Search for an Location Set Type" [(ngModel)]="search">
+            <button *ngIf="search" matSuffix mat-icon-button
+                    aria-label="Clear" (click)="search=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div fxFlex="7" fxLayoutAlign="start" style="margin-top:17px;height:55px">
+          <button mat-icon-button (click)="openCreateItemTypeDialog()">
+                   <span matTooltip="Create a Location Set type">
+                        <mat-icon id="add">
+                                add
+                            </mat-icon>
+                   </span>
+          </button>
+        </div>
+      </div>
+      <div  id="line-spacing">
+      </div>
+      <div class="locationSetType-list">
+        <mat-progress-spinner *ngIf="spinner" style="margin: 40px auto;"
+                              [color]="color"
+                              [mode]="mode"
+                              [diameter]="diameter">
+        </mat-progress-spinner>
+        <mat-list id="management-list">
+          <mat-list-item *ngFor="let locationSetType of locationSetTypes | searchFilter: search:selected; let i = index"
+                         [ngClass]="{'selected-bold': locationSetType?.selected}" [contextMenu]="basicMenu"
+                         [contextMenuSubject]="locationSetType">
+
+            <button  mat-button
+                     (click)="makeBold(locationSetType)">
+              <span class="bull">&#8226;</span>
+              <span [innerHTML]="locationSetType.name  | highlight : search"></span>
+            </button>
+            <context-menu #basicMenu [disabled]="user.isReadOnly">
+              <ng-template contextMenuItem >
+                <button mat-button [disabled]="locationSetType.locked" id="context-color" (click)="openDeleteItemTypeDialog(locationSetType, i)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </ng-template>
+            </context-menu>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-card>
+  </div>
+  <div  fxFlex="40" fxFlexOffset="1">
+    <mat-card style="height:100%">
+      <app-location-set-type-edit [inputLocationSetType]="selectedLocationSetType" (locationSetTypeChanged)="locationSetTypeChange($event)"></app-location-set-type-edit>
+    </mat-card>
+  </div>
+</div>

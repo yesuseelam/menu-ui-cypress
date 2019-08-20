@@ -1,0 +1,75 @@
+<div fxLayout="row">
+  <div fxLayout="column" fxFlex="60">
+    <mat-card>
+      <div fxFlex="row" id="moz-fixed-height" style="max-height:70px !important">
+        <div fxFlex="93" style="height:70px">
+          <mat-form-field class="select-full-width">
+            <mat-select [(ngModel)]="selected">
+              <mat-option *ngFor="let dropdown of selectDropDown" [value]="dropdown.tag">
+                {{dropdown.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Search for an Item / Modifier Grouping" type="text" matTooltip="Search for an Item/Modifier Grouping" [(ngModel)]="search"
+                   id="filter" #filter [formControl]="searchField">
+            <button *ngIf="search" matSuffix mat-icon-button
+                    aria-label="Clear" (click)="search=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div fxFlex="7" fxLayoutAlign="start" style="margin-top:17px;height:55px">
+          <button mat-icon-button (click)="openCreateItemGroupingDialog()">
+                        <span matTooltip="Create an Item Grouping">
+                            <mat-icon id="add">
+                                add
+                            </mat-icon>
+                        </span>
+          </button>
+        </div>
+      </div>
+      <div id="line-spacing">
+      </div>
+      <div class="attribute-list">
+        <mat-progress-spinner *ngIf="isLoading" style="margin: 40px auto;" color="#e5173f" mode="indeterminate" diameter="50">
+        </mat-progress-spinner>
+        <div ngClass="node-tree">
+          <tree-root #tree [nodes]="nodes" [options]="options" >
+            <ng-template #treeNodeTemplate let-node let-index="index">
+              <span [ngClass]="{'node-disabled' : !node.data.data.enabled , 'node' : true } " [contextMenu]="basicMenu" [contextMenuSubject]="node.data">{{ node.data.name }}</span>
+              <context-menu #basicMenu [disabled]="user.isReadOnly">
+                <ng-template [visible]="node.data.data.grouping" contextMenuItem>
+                  <button class="context-color" mat-button (click)="addChildItem(node)">
+                    <mat-icon>add</mat-icon>
+                    <span>Add Item</span>
+                  </button>
+                </ng-template>
+                <ng-template contextMenuItem>
+                  <button class="context-color" mat-button (click)="toggleEnabled(node)">
+                    <mat-icon>{{isEnabled(node) ? "do_not_disturb_off" : "do_not_disturb_on"}}</mat-icon>
+                    <span>{{isEnabled(node) ? "Disable" : "Enable"}}</span>
+                  </button>
+                </ng-template>
+                <ng-template contextMenuItem>
+                  <button class="context-color" [disabled]=" node.isRoot ? node.data.data.locked : false" mat-button (click)="deleteItem(node)">
+                    <mat-icon>delete</mat-icon>
+                    <span > {{node.isRoot ? 'Delete' : 'Remove'}}</span>
+                  </button>
+                </ng-template>
+
+              </context-menu>
+            </ng-template>
+          </tree-root>
+        </div>
+
+      </div>
+    </mat-card>
+  </div>
+  <div fxFlex="40" fxFlexOffset="1">
+    <mat-card style="height:100%">
+
+      <app-item-edit [inputItem]="selectedItem" (itemChanged)="itemChange($event)">
+      </app-item-edit>
+    </mat-card>
+  </div>
+</div>

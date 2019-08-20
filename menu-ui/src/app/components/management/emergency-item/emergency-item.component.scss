@@ -1,0 +1,154 @@
+mat-card{
+  padding:0px;
+  flex-direction: column;
+}
+:host{
+  flex-direction: column !important;
+}
+
+.context-color{
+  color: #e5173f;
+  width: 100%;
+  text-align: left;
+  padding: 0px 5px 0px 20px !important;
+  font-size: 14px !important;
+}
+
+mat-icon {
+  margin-right: 6px;
+}
+
+#add{
+  font-size: 34px;
+  font-weight: bolder;
+  color: #e5173f;
+  padding-right: 12px;
+  padding-top: 8px;
+}
+
+#line-spacing{
+  border-bottom: 2px solid #eee;
+  margin: 5px 0px 0px 0px;
+}
+
+mat-list-item{
+  display: block;
+  // padding: 10px 20px 15px 20px;
+  border-bottom: 2px solid #eee;
+  color: #e5173f;
+  font-family: PMN Caecilia;
+}
+
+#moz-fixed-height{
+  max-height: 70px !important;
+}
+
+
+.bull{
+  //   color: #e5173f;
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+#right-icon{
+  font-weight: bolder;
+  font-size: 27px;
+  width:30px;
+  margin-left: 10px;
+  padding-top: 9px;
+}
+
+.mat-button{
+  padding: 5px 5px 5px 20px;
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+}
+
+.mat-button:disabled{
+  color: gray !important;
+}
+
+.selected-bold{
+  background: #e5173f;
+  color: white;
+}
+
+.mat-menu-item{
+  height: 40px;
+  line-height: 40px;
+}
+
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #e5173f;
+}
+
+.mat-expansion-panel-spacing{
+  margin: 0px;
+}
+
+.mat-expansion-panel-header.mat-expanded:focus,
+.mat-expansion-panel-header.mat-expanded:hover{
+  background: #e5173f;
+  color: white;
+}
+
+.mat-expansion-panel-body {
+  margin: 10px 24px 16px;
+}
+
+.expansion-style{
+  color: #e5173f;
+  border-bottom: 2px solid #eee;
+}
+
+.mat-button {
+  color: #e5173f !important;
+}
+
+h2{
+  font-weight: 400;
+  color: #e5173f;
+  font-size: 22px;
+  font-family: PMN Caecilia;
+  margin-bottom: 15px;
+}
+
+.edit-margin{
+  margin:10px 15px 10px 0px
+}
+
+label{
+  font-size: 15px;
+  color: #776e64;
+}
+
+.tag{
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.edit-table{
+  height:90px;
+  overflow:auto;
+  margin-bottom: 18px;
+  resize:vertical;
+  max-height: 200px;
+}
+
+.table-label{
+  font-weight: normal;font-family: PMN Caecilia;color: rgb(119,110,100);
+}
+
+td {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+
+tr:last-child>td {
+  border-bottom: 1px solid #ddd;
+}

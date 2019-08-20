@@ -1,0 +1,74 @@
+mat-card{
+  padding:0px;
+  flex-direction: column;
+}
+:host{
+  flex-direction: column !important;
+}
+
+.context-color{
+  color: #e5173f;
+  width: 100%;
+  text-align: left;
+  padding: 0px 5px 0px 20px !important;
+  font-size: 14px !important;
+}
+
+mat-icon {
+  margin-right: 6px;
+}
+
+#add{
+  font-size: 34px;
+  font-weight: bolder;
+  color: #e5173f;
+  padding-right: 12px;
+  padding-top: 8px;
+}
+
+#line-spacing{
+  border-bottom: 2px solid #eee;
+  margin: 5px 0px 0px 0px;
+}
+
+mat-list-item{
+  display: block;
+  // padding: 10px 20px 15px 20px;
+  border-bottom: 2px solid #eee;
+  color: #e5173f;
+  font-family: PMN Caecilia;
+}
+
+#moz-fixed-height{
+  max-height: 70px !important;
+}
+
+
+.bull{
+  //   color: #e5173f;
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+.mat-button{
+  padding: 5px 5px 5px 30px;
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+}
+
+.selected-bold{
+  background: #e5173f;
+  color: white;
+}
+
+.mat-menu-item{
+  height: 40px;
+  line-height: 40px;
+}
+
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #e5173f;
+}
+

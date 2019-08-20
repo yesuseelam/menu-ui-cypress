@@ -1,0 +1,86 @@
+<div fxFlex="column" id="heading">
+    <div fxFlexFill fxFlex="auto">
+        <div fxFlexFill fxFlex="67" class="main-content">
+            <a fxHide.xs [fxFlex]="pushMenuToggle ? 0 : 32" [fxFlexOffset]="pushMenuToggle ? 0 : 2">
+                <mat-card fxFlexFill [ngClass]="{'visible': pushMenuToggle}" style="padding:0px">
+                    <div fxFlex="column" id="sidenav-tab2" fxLayoutAlign="start">
+                        <mat-form-field id="location-set-type">
+                            <mat-select placeholder="Select Location Set Type" [formControl]="locationSetTypeCtrl">
+                                <mat-option *ngFor="let locationSetType of (locationSetTypes$ | async) | menuLocationSetTypeFilter" [value]="locationSetType">
+                                    {{ locationSetType.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field id="location-set-type" *ngIf="isLocationSetTypeParent">
+                          <mat-select [placeholder]="placeholderTextParent" [formControl]="locationSetParentCtrl" data-cy="SetName">
+                            <mat-option *ngFor="let locationSet of parentLocationSets"  [value]="locationSet">
+                              {{ locationSet.name }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-form-field id="location-set-type" *ngIf="selectedLocationSetType && showLocationSets">
+                            <input matInput [placeholder]="placeholderText" aria-label="Location Set" data-cy="InputSetType"
+                                   [matAutocomplete]="auto" [formControl]="locationSetCtrl">
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let locationSet of filteredLocationSets" [value]="locationSet">
+                                    <span>{{ locationSet.name }}</span>
+                                </mat-option>
+                            </mat-autocomplete>
+                            <button *ngIf="locationSetCtrl.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="resetLocationSetCntrl()">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <div class="line-seperator"></div>
+                        <div style="width:100%">
+                            <app-destination [locationSet]="selectedLocationSet" [locationSetType]="selectedLocationSetType"
+                                             (selectedDestination)="selectDestination($event)"></app-destination>
+                        </div>
+                    </div>
+                </mat-card>
+            </a>
+            <a [fxFlex]="pushMenuToggle ? 98 : 66" fxFlex.xs="98" [fxFlexOffset]="pushMenuToggle ? 3 : 1"
+               fxFlexOffset.xs="3">
+                <mat-card fxFlexFill class="push-menu">
+                    <div fxLayout="column">
+                        <div fxLayout="row" style="padding-top:10px;">
+                            <button mat-icon-button (click)="pushMenuToggle = !pushMenuToggle" fxFlex="7">
+                                <mat-icon style="font-weight: 500;font-size: 30px;">
+                                  reorder
+                                </mat-icon>
+                            </button>
+                            <h3 [fxFlex]="pushMenuToggle ? 86: 80" [fxFlexOffset]="pushMenuToggle ? 0: 2"
+                                [ngClass]="{'disabled': !selectedDestination?.destinationFlag}"
+                                class="destination-heading2">
+                                {{selectedDestination?.name | titlecase}}
+                                <span *ngIf="selectedDestination" class="location-heading"><br/>{{selectedLocationSet?.name | titlecase}}</span>
+                            </h3>
+
+                            <button mat-icon-button (click)="openCreateSubMenu()">
+                                <mat-icon id="add" *ngIf="selectedDestination?.name">
+                                    add
+                                </mat-icon>
+                            </button>
+                        </div>
+                        <div class="line-seperator2"></div>
+
+                        <app-menu-tree [menuKey]="selectedMenu" (selectedItem)="itemSelected($event)"></app-menu-tree>
+                      <div *ngIf="selectedMenu">
+                        <button  [disabled]= "user.isReadOnly" (click)="reloadFromProd(selectedMenu)" style="width: 100%" matTooltip="Feature only available while in development" [textContent]="reloadButtonText" mat-raised-button mat-button></button>
+                        <mat-progress-bar *ngIf="reloadingFromProd"
+                          mode="indeterminate"></mat-progress-bar>
+                      </div>
+                    </div>
+                </mat-card>
+            </a>
+        </div>
+        <div style="width:32%">
+            <mat-card class="card-attributes">
+                <div fxFlex="column" id="sidenav-tab2">
+                    <app-menu-edit [data]="data" [menuKey]="selectedMenu" [itemPath]="selectedItemPath" (itemUpdated)="itemUpdated($event)"></app-menu-edit>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+    <app-info></app-info>
+</div>

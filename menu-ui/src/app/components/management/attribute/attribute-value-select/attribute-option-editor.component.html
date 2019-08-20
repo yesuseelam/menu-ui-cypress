@@ -1,0 +1,62 @@
+<div fxLayout="column" fxFlexOffset="5" style="margin-right:5%" class="selectValue-full-width">
+    <div fxLayoutAlign="center center" style="font-size:22px;margin-bottom:10px">
+        {{title | titlecase}}
+    </div>
+    <div fxLayoutAlign="center center" style="font-size:16px;margin-bottom:10px">
+        Options
+    </div>
+
+    <form [formGroup]="form" novalidate>
+        <mat-dialog-content>
+            <div style="margin-top: 10px;width:500px">
+                <div fxFlex="85">
+                </div>
+                <div fxFlex="15" style="">
+                    <button mat-icon-button (click)="newSelectOption(bottom)">
+                        <mat-icon style="font-size: 34px;font-weight: bolder;color: #e5173f;padding-right:7px"
+                                  matTooltip="Add a new option">
+                            add
+                        </mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div fxLayout="column" style="height: 350px;overflow: auto;width:500px">
+
+                <div formArrayName="attributeOptions"
+                     *ngFor="let formGroup of attributeOptions.controls;let i = index">
+                    <div [formGroupName]="i">
+                        <div fxFlex="70">
+                            <mat-form-field style="width:100%">
+                                <input matInput required placeholder="Option" formControlName="option">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="15" style="padding-top: 20px;padding-left: 22px;">
+                            <mat-checkbox formControlName="isDefault" matTooltip="Set Default Option" (change)="defaultSelected(i)"></mat-checkbox>
+                        </div>
+                        <div fxFlex="15" style="padding-top:10px">
+
+                            <button mat-icon-button (click)="removeSelectOption(i)">
+                                <mat-icon style="font-size: 34px;font-weight: bolder;color: #e5173f;padding-right:7px"
+                                          matTooltip="Remove this option">
+                                    remove
+                                </mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div #bottom></div>
+            </div>
+        </mat-dialog-content>
+
+        <mat-dialog-actions fxLayoutAlign="center center" style="margin-top:20px">
+                <button mat-raised-button type="button" matTooltip="Cancel Changes"
+                        (click)="dismiss()" style="margin-right:60px"
+                        class="button-color"> <mat-icon>cancel</mat-icon> Cancel
+                </button>
+                <button mat-raised-button matTooltip="Accept Changes" (click)="accept()" class="button-color" [disabled]="!form.valid">
+                    <mat-icon>save</mat-icon>
+                    OK
+                </button>
+        </mat-dialog-actions>
+    </form>
+</div>

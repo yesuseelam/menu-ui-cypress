@@ -1,0 +1,134 @@
+<div fxFlex="column" *ngIf="item">
+  <form style="padding: 3px 5px 0 10px;flex-direction:column" [formGroup]="form" class="itemType-list" novalidate (ngSubmit)="OnSubmit()">
+    <h2>Attributes</h2>
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="39">
+        <label>
+          Tag
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" class="tag">
+        {{item?.tag}}
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="39">
+        <label>
+          Item Type
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+        <select class="form-control" name="itemTypeTag" placeholder="Item Type" formControlName="itemTypeTag">
+          <option *ngFor="let itemType of itemTypes" [value]="itemType.tag">
+            {{ itemType.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div fxFlex="row" class="edit-margin">
+      <div fxFlex="39">
+        <label>
+          Locked
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+        <select class="form-control"  formControlName="locked">
+          <option value="true">True</option>
+          <option value="false">False</option>
+        </select>
+      </div>
+    </div>
+
+
+    <div fxFlex="row" class="edit-margin" *ngFor="let attr of item?.attributes">
+      <div fxFlex="39" style="padding-top:5px">
+        <label [matTooltip]="attr.description">
+          <span *ngIf="attr.countryCode == 'US'; else otherCountry">{{attr.name}}</span>
+          <ng-template #otherCountry><span>{{attr.name}} ({{attr.countryCode}})</span></ng-template>
+          <span style="display: inline-block;vertical-align: middle;" *ngIf="attr.required">
+                        <mat-icon style="font-size:7px;color:#6c635a">star</mat-icon>
+                    </span>
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap" *ngIf="attr.type === 'TEXT'">
+        <input matInput [formControlName]="attr.attrFormTag" class="form-control" [required]="attr.required" [placeholder]="attr.name" [matTooltip]="attr.auditInfo" matTooltipShowDelay="2000">
+        <span *ngIf="form.controls[attr.attrFormTag].invalid" style="color:#e5173f;font-size:14px">Enter a Value</span>
+      </div>
+
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex" *ngIf="attr.type === 'DATE'">
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" [formControlName]="attr.attrFormTag" placeholder="Choose a date"  [required]="attr.required">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.controls[attr.attrFormTag].invalid">
+            Please enter a valid date
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex" *ngIf="attr.type === 'DATERANGE'">
+        <input type="text" class="form-control" autoApply="true" (keyup)="dateUpdated($event, attr.attrFormTag)" ngxDaterangepickerMd [formControlName]="attr.attrFormTag">
+      </div>
+
+
+
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap" *ngIf="attr.type === 'TEXTAREA'">
+        <textarea matInput rows="3" [formControlName]="attr.attrFormTag" class="form-control" [required]="attr.required" [placeholder]="attr.name" [matTooltip]="attr.auditInfo" matTooltipShowDelay="2000"></textarea>
+        <span *ngIf="form.controls[attr.attrFormTag].invalid" style="color:#e5173f;font-size:14px">Enter a Value</span>
+      </div>
+
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap" *ngIf="attr.type === 'NUM'">
+        <input class="form-control" type="number" [formControlName]="attr.attrFormTag" [required]="attr.required" [matTooltip]="attr.auditInfo" matTooltipShowDelay="2000" [placeholder]="attr.name">
+        <span *ngIf="form.controls[attr.attrFormTag].invalid" style="color:#e5173f;font-size:14px">Enter a Value</span>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap" *ngIf="attr.type === 'SELECT' || attr.type === 'BOOL'">
+        <mat-select [formControlName]="attr.attrFormTag" class="form-control" [required]="attr.required" [matTooltip]="attr.auditInfo" matTooltipShowDelay="2000">
+          <mat-option *ngFor="let option of attr.options" [value]="option.value">{{option.label}}</mat-option>
+        </mat-select>
+        <span *ngIf="form.controls[attr.attrFormTag].invalid" style="color:#e5173f;font-size:14px">Enter a Value</span>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex;flex-wrap:wrap" *ngIf="attr.type === 'MULTI_SELECT'">
+
+        <mat-form-field>
+          <mat-select [formControlName]="attr.attrFormTag" placeholder="Select" [matTooltip]="attr.auditInfo" matTooltipShowDelay="2000" multiple>
+            <mat-option *ngIf="!allOptionsSelected(attr)" (click)="selectAllOptions(attr)">Select All</mat-option>
+            <mat-option *ngIf="allOptionsSelected(attr)" (click)="deselectAllOptions(attr)">Deselect All</mat-option>
+            <mat-divider></mat-divider>
+            <mat-option *ngFor="let option of attr.options" [value]="option.value">{{option.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin-user" *ngIf="item">
+      <div fxFlex="39">
+        <label>
+          Last Updated By
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+        {{item?.lastUpdatedBy}}
+      </div>
+    </div>
+    <div fxFlex="row" class="edit-margin-user" *ngIf="item">
+      <div fxFlex="39">
+        <label>
+          Last Updated Date
+        </label>
+      </div>
+      <div fxFlex="60" fxFlexOffset="3" style="display:flex">
+                <span>
+                    {{item?.lastUpdatedDate | date:dateTimeFormat}}
+                </span>
+      </div>
+    </div>
+    <div fxFlex="row" fxLayoutAlign="center center" style="margin:30px 0px" *ngIf="item">
+      <button type="button" (click)="OnCancel()" matTooltip="Cancel" mat-raised-button style="margin-right:30px;background-color:#e5173f;color:white" >
+        Cancel
+      </button>
+      <button type="submit" [disabled]="form.pristine || form.invalid || user.isReadOnly" matTooltip="Update Item" mat-raised-button style="margin-left:30px;background-color:#e5173f;color:white">
+        Update
+      </button>
+    </div>
+  </form>
+</div>

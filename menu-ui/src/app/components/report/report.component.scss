@@ -1,0 +1,99 @@
+:host{
+    background-color: #f1f6f7;
+    font-family: PMN Caecilia;
+}
+.mat-icon-button{
+    color: #e5173f;
+}
+
+#heading{
+    flex-direction: column !important;
+    margin-bottom: 10px;
+}
+
+#sidenav-tab2{
+    width: 100%;
+    flex-direction: column !important;
+    align-items: flex-start !important; 
+    margin: 16px;
+    .destination-heading{
+        font-size: 18px;
+        color: #e5173f;
+        cursor: pointer;
+        font-family: PMN Caecilia;
+        margin: 11px 11px 11px 15px;
+    }
+  }
+
+  #add{
+    font-size: 34px;
+    font-weight: bolder;
+    color: #e5173f;
+}
+
+  mat-card{
+      padding-top: 13px;
+      height: 100%;
+  }
+
+  #line-spacing{
+    border-bottom: 2px solid #eee;
+    margin: 5px 15px 15px 0px;
+  }
+
+  #heading-tab2{
+      font-size: 24px;
+      margin-left: 2.2%;
+  }
+
+  a{
+    display: inline-block;
+    height: 100%; 
+  }
+
+  .disabled{
+    color:#d3d3d3;
+}
+
+  .push-menu{
+    padding: 0px;
+  }
+
+  .visible{
+      visibility: hidden;
+      padding: 0px;
+  }
+
+  .selected{
+    border-bottom: 1px dotted;
+    font-family: PMN Caecilia Bold;
+}
+
+
+.destination-heading{
+    font-size: 18px;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-family: PMN Caecilia Bold;
+    color: #e5173f;
+}
+
+
+.selected-bold{
+    background: #e5173f;
+    color: white;
+}
+
+
+#context-color{
+    color: #e5173f;
+    width: 100%;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.attribute-list{
+    .mat-form-field {
+        width: 280px;
+    }
+}

@@ -1,0 +1,58 @@
+<div fxLayout="row">
+  <div fxLayout="column" fxFlex="60">
+    <mat-card>
+      <div fxFlex="row" id="moz-fixed-height" style="max-height:70px !important">
+        <div fxFlex="93" style="height:70px">
+          <mat-form-field class="select-full-width">
+            <mat-select [(ngModel)]="selected">
+              <mat-option *ngFor="let dropdown of selectDropDown" [value]="dropdown.tag">
+                {{dropdown.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Search for an Emergency Turn Off Item" type="text" matTooltip="Search for an Emergency Turn Off Item" [(ngModel)]="search"
+                   id="filter" #filter [formControl]="searchField">
+            <button *ngIf="search" matSuffix mat-icon-button
+                    aria-label="Clear" (click)="search=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+      <div id="line-spacing">
+      </div>
+      <div class="attribute-list">
+        <mat-progress-spinner *ngIf="isLoading" style="margin: 40px auto;" color="#e5173f" mode="indeterminate" diameter="50">
+        </mat-progress-spinner>
+        <div ngClass="node-tree">
+          <tree-root #tree [nodes]="nodes" [options]="options" >
+            <ng-template #treeNodeTemplate let-node let-index="index">
+              <span [ngClass]="{'node' : true } ">{{ node.data.name }}</span>
+            </ng-template>
+          </tree-root>
+        </div>
+
+      </div>
+    </mat-card>
+  </div>
+
+  <div fxFlex="40" fxFlexOffset="1">
+    <mat-card style="height:100%">
+      <div fxFlex="column" style="padding: 3px 5px 0 20px;" *ngIf="selectedItem">
+        <h2>Attributes</h2>
+        <form style=" flex-direction:column" [formGroup]="form" class="emergency-list">
+          <div fxFlex="row" class="edit-margin">
+            <div fxFlex="25">
+              <label>
+                Tag
+              </label>
+            </div>
+            <div fxFlex="60" fxFlexOffset="3" class="tag">
+              <label>{{selectedItem.tag}}</label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </mat-card>
+  </div>
+</div>
