@@ -46,7 +46,7 @@ describe('Verify and login to EMM ', function () {
 
 
 
-/*
+
 describe('Logout from the Menu', function() {
   it('Log out', function() {
 
@@ -57,7 +57,7 @@ describe('Logout from the Menu', function() {
     cy.log("Test case executed Successfully.")
 
   })
-})*/
+})
 })
 })
 
